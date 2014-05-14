@@ -183,33 +183,9 @@ public class MainServlet extends HttpServlet {
 				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
 			}
 			
-			/////////////////////////////////
-			//	 
-			////////////////////////////////
-		} else if (req.getParameter("operation").equals("insertContact")) {
-			if (req.getParameter("iconUrl") == null || req.getParameter("name") == null) {
-				message = "Must specify iconUrl and name to insert contact";
-			} else {
-				// Insert a contact
-				LOG.fine("Inserting contact Item");
-				Contact contact = new Contact();
-				contact.setId(req.getParameter("id"));
-				contact.setDisplayName(req.getParameter("name"));
-				contact.setImageUrls(Lists.newArrayList(req.getParameter("iconUrl")));
-				contact.setAcceptCommands(Lists.newArrayList(new Command().setType("TAKE_A_NOTE")));
-				MirrorClient.insertContact(credential, contact);
-
-				message = "Inserted contact: " + req.getParameter("name");
-			}
-
-		} else if (req.getParameter("operation").equals("deleteContact")) {
-
-			// Insert a contact
-			LOG.fine("Deleting contact Item");
-			MirrorClient.deleteContact(credential, req.getParameter("id"));
-
-			message = "Contact has been deleted.";
-
+		/////////////////////////////////
+		//	 insertItemAllUsers
+		////////////////////////////////
 		} else if (req.getParameter("operation").equals("insertItemAllUsers")) {
 			if (req.getServerName().contains("glass-java-starter-demo.appspot.com")) {
 				message = "This function is disabled on the demo instance.";
@@ -235,33 +211,13 @@ public class MainServlet extends HttpServlet {
 					Credential userCredential = AuthUtil.getCredential(user);
 					MirrorClient.getMirror(userCredential).timeline().insert(allUsersItem)
 					.queue(batch, callback);
-					//temp.setText("Det funkar eller");
-					//MirrorClient.getMirror(userCredential).timeline().update(firstcard, temp).execute();
 				}
-
 
 				batch.execute();
 				message =
 						"Successfully sent cards to " + callback.success + " users (" + callback.failure
 						+ " failed).";
 			}
-
-
-		} else if (req.getParameter("operation").equals("deleteTimelineItem")) {
-
-			// Delete a timeline item
-			LOG.fine("Deleting Timeline Item");
-			MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
-			UpdateMirror um = new UpdateMirror();
-			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
-
-			/*TimelineItem timelineItem3 = new TimelineItem();
-			timelineItem3.setText(req.getParameter("itemId"));
-			timelineItem3.setBundleId("abcde");
-			MirrorClient.insertTimelineItem(credential, timelineItem3);*/
-
-
-			message = "Timeline Item has been deleted.";
 
 		} else {
 			String operation = req.getParameter("operation");
