@@ -72,7 +72,7 @@ public class NewUserBootstrapper {
     }
     
    //Send welcome timeline item
-    TimelineItem timelineItem = new TimelineItem();
+   /* TimelineItem timelineItem = new TimelineItem();
     //timelineItem.setIsPinned(true);
     //timelineItem.setPinScore(90);
     //
@@ -88,6 +88,6 @@ public class NewUserBootstrapper {
     TimelineItem insertedItem = MirrorClient.insertTimelineItem(credential, timelineItem);
     LOG.info("Bootstrapper inserted welcome message " + insertedItem.getId() + " for user "
         + userId);
-       
+       */
   }
 }

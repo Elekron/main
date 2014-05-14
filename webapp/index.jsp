@@ -159,51 +159,39 @@ limitations under the License.
     <div class="span4">
       <h2>Timeline</h2>
 
-      <p>When you first sign in, this Glassware inserts a welcome message. Use
-        these controls to insert more items into your timeline. Learn more
-        about the timeline APIs
-        <a href="https://developers.google.com/glass/timeline">here</a>.</p>
+
 
 
       <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertItem">
-        <textarea class="span4" name="message">Hello World!</textarea><br/>
+        <input type="hidden" name="operation" value="InsertNotification">
         <button class="btn btn-block" type="submit">
-          Insert the above message
+          Insert Notification
         </button>
-      </form>
-
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertItem">
-        <input type="hidden" name="message" value="Chipotle says 'hi'!">
-        <input type="hidden" name="imageUrl" value="<%= appBaseUrl +
-               "static/images/chipotle-tube-640x360.jpg" %>">
-        <input type="hidden" name="contentType" value="image/jpeg">
-
-        <button class="btn btn-block" type="submit">Insert a picture
-          <img class="button-icon" src="<%= appBaseUrl +
-               "static/images/chipotle-tube-640x360.jpg" %>">
-        </button>
-      </form>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertPaginatedItem">
-        <button class="btn btn-block" type="submit">
-          Insert a card with long paginated HTML</button>
-      </form>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertItemWithAction">
-        <button class="btn btn-block" type="submit">
-          Insert a card you can reply to</button>
       </form>
       <hr>
       <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertItemAllUsers">
+        <input type="hidden" name="operation" value="UpdateCoverCard">
         <button class="btn btn-block" type="submit">
-          Insert a card to all users</button>
+          Update CoverCard 
+        </button>
       </form>
+      <hr>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="InsertBundleCard">
+        <button class="btn btn-block" type="submit">
+          Insert BundleCard
+        </button>
+      </form>
+      <hr>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="DeleteAllCard">
+        <button class="btn btn-block" type="submit">
+          Delete AllCard</button>
+      </form>
+      <hr>
     </div>
 
-    <div class="span4">
+    <%--<div class="span4">
       <h2>Contacts</h2>
 
       <p>By default, this project inserts a single contact that accepts
@@ -288,7 +276,7 @@ limitations under the License.
         </button>
       </form>
       <% } %>
-    </div>
+    </div>--%>
   </div>
 </div>
 
