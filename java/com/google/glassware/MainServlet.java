@@ -149,7 +149,23 @@ public class MainServlet extends HttpServlet {
 		
 		} else if (req.getParameter("operation").equals("insertPaginatedItem")) {
 
+<<<<<<< HEAD
+			GetTimeLineList gtll = new GetTimeLineList();
+			List<TimelineItem> myResult = gtll.retrieveAllTimelineItems(MirrorClient.getMirror(credential));
+			String myString = "";
+			if(myResult.isEmpty()){
+				myString="true";
+			}else{
+				myString="false";
+			}
+			
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setText(myString);
+			timelineItem.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem);
+			
 
+=======
 			//Lista
 			List<TimelineItem> items = new ArrayList<TimelineItem>();
 			Mirror service = MirrorClient.getMirror(credential);
@@ -191,7 +207,7 @@ public class MainServlet extends HttpServlet {
 		        
 			
 			
-
+>>>>>>> 1033b03f92bd39e22601561f6ad30dc3b7ba2b65
 		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
 			LOG.fine("Inserting Timeline Item");
 			TimelineItem timelineItem = new TimelineItem();
