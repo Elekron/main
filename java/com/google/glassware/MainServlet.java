@@ -51,6 +51,7 @@ public class MainServlet extends HttpServlet {
 	String firstcard = "test";
 	TimelineItem temp;
 	Boolean firstTimeNotification = true;
+	int counter = 0;  
 
 	/**
 	 * Private class to process batch request results.
@@ -155,12 +156,13 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Bundle");
+			timelineItem.setText("Bundle"+counter);
 			timelineItem.setBundleId("Moment");
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
-
+			counter++;
+			
 		/////////////////////////////////
 		//	DeleteAllCard 
 		////////////////////////////////
