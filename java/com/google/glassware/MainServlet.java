@@ -120,6 +120,7 @@ public class MainServlet extends HttpServlet {
 				menuValues.add(new MenuValue().setDisplayName("Starta Uppgiften"));
 				menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
 				timelineItem.setMenuItems(menuItemList);
+				
 				firstTimeNotification=false;
 			}
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -132,10 +133,30 @@ public class MainServlet extends HttpServlet {
 			
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
 			
-			TimelineItem timelineItem2 = new TimelineItem();
-			timelineItem2.setText("ASFDAFGAGFAG");
-			timelineItem2.setIsBundleCover(false);
-			MirrorClient.insertTimelineItem(credential, timelineItem2);
+			UpdateMirror um = new UpdateMirror();
+			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
+
+			/////////////////////////////////
+			//
+			/////////////////////////////////
+			List<TimelineItem> items = new ArrayList<TimelineItem>();
+			Mirror service = MirrorClient.getMirror(credential);
+			TimelineListResponse timelineItems;
+			List<TimelineItem> result = new ArrayList<TimelineItem>();
+			Timeline.List request;
+
+			request = service.timeline().list();
+			timelineItems = request.execute();
+			result = timelineItems.getItems();
+			
+			
+			MirrorClient.deleteTimelineItem(credential,result.get(result.size()).getId());
+			
+			
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setText("ASFDAFGAGFAG");
+			timelineItem.setIsBundleCover(false);
+			MirrorClient.insertTimelineItem(credential, timelineItem);
 			
 			/////////////////////////////////
 			//	Insert a HTML 
