@@ -107,7 +107,7 @@ public class MainServlet extends HttpServlet {
 		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
 
-
+		
 		/////////////////////////////////
 		//	Insert a Notification kort 
 		////////////////////////////////
@@ -145,28 +145,20 @@ public class MainServlet extends HttpServlet {
 			////////////////////////////////
 		} else if (req.getParameter("operation").equals("insertPaginatedItem")) {
 
-
-			String test = "Its works najs";
-			UpdateMirror um = new UpdateMirror();
-			Mirror service = MirrorClient.getMirror(credential);
-			um.updateTimelineItem(service, message, test, "DEFAULT");
+			GetTimeLineList gtll = new GetTimeLineList();
+			List<TimelineItem> myResult = gtll.retrieveAllTimelineItems(MirrorClient.getMirror(credential));
+			String myString = "";
+			if(myResult.isEmpty()){
+				myString="true";
+			}else{
+				myString="false";
+			}
 			
-			TimelineItem timelineItem1 = new TimelineItem();
-			timelineItem1.setText(message);
-			timelineItem1.setBundleId("abcde");
-			MirrorClient.insertTimelineItem(credential, timelineItem1);
-
-			TimelineItem timelineItem2 = new TimelineItem();
-			timelineItem2.setText(test);
-			timelineItem2.setBundleId("abcde");
-			MirrorClient.insertTimelineItem(credential, timelineItem2);
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setText(myString);
+			timelineItem.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem);
 			
-			TimelineItem timelineItem3 = new TimelineItem();
-			timelineItem3.setText(service.toString());
-			timelineItem3.setBundleId("abcde");
-			MirrorClient.insertTimelineItem(credential, timelineItem3);
-			
-
 
 		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
 			LOG.fine("Inserting Timeline Item");
@@ -255,7 +247,7 @@ public class MainServlet extends HttpServlet {
 
 			// Delete a timeline item
 			LOG.fine("Deleting Timeline Item");
-			//MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
+			MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
 			UpdateMirror um = new UpdateMirror();
 			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
 			
