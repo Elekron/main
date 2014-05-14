@@ -103,7 +103,7 @@ public class MainServlet extends HttpServlet {
 		//	InsertNotification 
 		////////////////////////////////
 		// Uppgift.Moment
-		///////////////////////////////
+		////////////////////////////////
 		if (req.getParameter("operation").equals("InsertNotification")) {
 
 			LOG.fine("Inserting Timeline Item");
@@ -130,12 +130,13 @@ public class MainServlet extends HttpServlet {
 			
 			
 			
-			
+		/////////////////////////////////
+		//	UpdateCoverCard 
+		////////////////////////////////
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
 			
 			UpdateMirror um = new UpdateMirror();
-			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
-
+			
 			/////////////////////////////////
 			//
 			/////////////////////////////////
@@ -149,20 +150,11 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			
-			
-			MirrorClient.deleteTimelineItem(credential,result.get(result.size()).getId());
-			
-			
-			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("ASFDAFGAGFAG");
-			timelineItem.setIsBundleCover(false);
-			MirrorClient.insertTimelineItem(credential, timelineItem);
-			
-			/////////////////////////////////
-			//	Insert a HTML 
-			////////////////////////////////
+			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()).getId(), "Update", "DEFAULT");
 
-
+		/////////////////////////////////
+		//	InsertBundleCard 
+		////////////////////////////////
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 
