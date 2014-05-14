@@ -70,13 +70,24 @@ public class NewUserBootstrapper {
       LOG.warning("Failed to create timeline subscription. Might be running on "
           + "localhost. Details:" + e.getDetails().toPrettyString());
     }
-
-    // Send welcome timeline item
+    
+   //Send welcome timeline item
     TimelineItem timelineItem = new TimelineItem();
-    timelineItem.setText("Welcome to the Glass Java Quick Start");
+    //timelineItem.setIsPinned(true);
+    //timelineItem.setPinScore(90);
+    //
+    
+    timelineItem.setText("Welcome to the Glass Lern something");
+	//timelineItem.setHtml("<article class='auto-paginate'>\n    <div class=\"overlay-full\"/>\n  <header>\n    <img src=\"https://mirror-api-playground.appspot.com/links/lincoln-avatar.png\"/>\n    <h1>@abraham_lincoln</h1>\n    <h2>Gettysburg, Pennsylvania</h2>\n  </header>\n  <section>\n    <p class=\"text-auto-size\">Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class=\"blue\">#liberty</span></p>\n <img src=\"http://wallpoper.com/images/00/44/86/76/dark-energy_00448676.jpg\">\n </section>\n</article>\n");
+
     timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+    timelineItem.setBundleId("abcde");
+    timelineItem.setIsBundleCover(true);
+    
+    
     TimelineItem insertedItem = MirrorClient.insertTimelineItem(credential, timelineItem);
     LOG.info("Bootstrapper inserted welcome message " + insertedItem.getId() + " for user "
         + userId);
+       
   }
 }
