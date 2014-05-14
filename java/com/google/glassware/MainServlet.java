@@ -117,7 +117,7 @@ public class MainServlet extends HttpServlet {
 			LOG.fine("Inserting Timeline Item");
 			TimelineItem timelineItem = new TimelineItem();
 
-			temp = timelineItem;
+			//temp = timelineItem;
 
 			
 			//timelineItem.setText("Starta appen");
@@ -139,55 +139,7 @@ public class MainServlet extends HttpServlet {
 			//firstcard = timelineItem.getId();
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
-
-
-
-
-
-
-
-			//i++;
-			//timelineItem.setHtml("<article class='photo'><img src='https://mirror-api-playground.appspot.com/links/filoli-spring-fling.jpg'><div class='overlay-gradient-tall-dark'/><section><p class='text-auto-size'>Spring Fling Fundraiser at Filoli</p></section></article>");
-			//timelineItem.setHtml("<article>\n  <figure>\n    <ul class=\"mosaic mosaic3\">\n      <li style=\"background-image: url(https://mirror-api-playground.appspot.com/links/washington.jpg)\"></li>\n      <li style=\"background-image: url(https://mirror-api-playground.appspot.com/links/lincoln.png)\"></li>\n      <li style=\"background-image: url(https://mirror-api-playground.appspot.com/links/obama.jpg)\"></li>\n      <li style=\"background-image: url(https://mirror-api-playground.appspot.com/links/washington.jpg)\"></li>\n      <li style=\"background-image: url(https://mirror-api-playground.appspot.com/links/lincoln.png)\"></li>\n    </ul>\n  </figure>\n  <section>\n    <p class=\"text-small muted\">\n      U.S. Presidents\n    </p>\n    <table class=\"text-small align-justify\">\n      <tbody>\n        <tr>\n          <td>Washington</td>\n          <td class=\"muted\">1<sup>st</sup></td>\n        </tr>\n        <tr>\n          <td>Lincoln</td>\n          <td class=\"muted\">16<sup>th</sup></td>\n        </tr>\n        <tr>\n          <td>Obama</td>\n          <td class=\"muted\">44<sup>th</sup></td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n</article>\n");
-			//timelineItem.setHtml("<article>\n  <section>\n    <div class=\"layout-figure\">\n      <div class=\"align-center\">\n        <p class=\"text-x-large\">BOS</p>\n        <img src=\"https://mirror-api-playground.appspot.com/links/plane.png\" width=\"50\" height=\"50\">\n        <p class=\"text-x-large\">SFO</p>\n      </div>\n      <div>\n        <div class=\"text-normal\">\n          <p>Virgin America 351</p>\n          <p>Gate B38</p>\n          <p>8:35am</p>\n          <p class=\"green\">On Time</p>\n        </div>\n      </div>\n    </div>\n  </section>\n</article>\n");
-			//timelineItem.setHtml("<article class='auto-paginate'>\n    <div class=\"overlay-full\"/>\n  <header>\n    <img src=\"https://mirror-api-playground.appspot.com/links/lincoln-avatar.png\"/>\n    <h1>@abraham_lincoln</h1>\n    <h2>Gettysburg, Pennsylvania</h2>\n  </header>\n  <section>\n    <p class=\"text-auto-size\">Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class=\"blue\">#liberty</span></p>\n <img src=\"http://wallpoper.com/images/00/44/86/76/dark-energy_00448676.jpg\">\n </section>\n</article>\n");
-
-			//timelineItem.setHtml(PAGINATED_HTML);
-			//timelineItem.setIsBundleCover(true);
-			/*timelineItem.setBundleId("abcde");
-      List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-
-      List<MenuValue> menuValues = new ArrayList<MenuValue>();
-      menuValues.add(new MenuValue().setDisplayName("Startar appen"));
-
-      menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
-      timelineItem.setMenuItems(menuItemList);
-			 */
-
-
-
-			/*if (req.getParameter("message") != null) {
-        timelineItem.setText(req.getParameter("message"));
-      }*/
-
-
-			/*
-      // Triggers an audible tone when the timeline item is received
-      timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-
-      /////////////////////////////////
-      // Om det finns bild länk skicka 
-      ////////////////////////////////
-      if (req.getParameter("imageUrl") != null) {
-        // Attach an image, if we have one
-        URL url = new URL(req.getParameter("imageUrl"));
-        String contentType = req.getParameter("contentType");
-        MirrorClient.insertTimelineItem(credential, timelineItem, contentType, url.openStream());
-      } else {
-        MirrorClient.insertTimelineItem(credential, timelineItem);
-      }
-
-      message = "A timeline item has been inserted.";*/
+			
 			/////////////////////////////////
 			//	Insert a HTML 
 			////////////////////////////////
@@ -198,24 +150,23 @@ public class MainServlet extends HttpServlet {
 			UpdateMirror um = new UpdateMirror();
 			Mirror service = MirrorClient.getMirror(credential);
 			um.updateTimelineItem(service, message, test, "DEFAULT");
+			
+			TimelineItem timelineItem1 = new TimelineItem();
+			timelineItem1.setText(message);
+			timelineItem1.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem1);
 
-			/*	  
-      LOG.fine("Inserting Timeline Item");
-      TimelineItem timelineItem = new TimelineItem();
-      timelineItem.setHtml(PAGINATED_HTML);
+			TimelineItem timelineItem2 = new TimelineItem();
+			timelineItem2.setText(test);
+			timelineItem2.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem2);
+			
+			TimelineItem timelineItem3 = new TimelineItem();
+			timelineItem3.setText(service.toString());
+			timelineItem3.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem3);
+			
 
-
-      List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-      menuItemList.add(new MenuItem().setAction("OPEN_URI").setPayload(
-          "https://www.google.com/search?q=cat+maintenance+tips"));
-      timelineItem.setMenuItems(menuItemList);
-
-      // Triggers an audible tone when the timeline item is received
-      timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-
-      MirrorClient.insertTimelineItem(credential, timelineItem);
-
-      message = "A timeline item has been inserted.";*/
 
 		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
 			LOG.fine("Inserting Timeline Item");
@@ -288,12 +239,10 @@ public class MainServlet extends HttpServlet {
 					Credential userCredential = AuthUtil.getCredential(user);
 					MirrorClient.getMirror(userCredential).timeline().insert(allUsersItem)
 					.queue(batch, callback);
-
-
 					//temp.setText("Det funkar eller");
 					//MirrorClient.getMirror(userCredential).timeline().update(firstcard, temp).execute();
 				}
-
+				
 
 				batch.execute();
 				message =
@@ -306,8 +255,16 @@ public class MainServlet extends HttpServlet {
 
 			// Delete a timeline item
 			LOG.fine("Deleting Timeline Item");
-			MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
-
+			//MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
+			UpdateMirror um = new UpdateMirror();
+			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
+			
+			/*TimelineItem timelineItem3 = new TimelineItem();
+			timelineItem3.setText(req.getParameter("itemId"));
+			timelineItem3.setBundleId("abcde");
+			MirrorClient.insertTimelineItem(credential, timelineItem3);*/
+			
+			
 			message = "Timeline Item has been deleted.";
 
 		} else {

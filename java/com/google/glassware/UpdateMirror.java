@@ -19,7 +19,7 @@ public class UpdateMirror {
 	 *        are {@code null} and "AUDIO_ONLY".
 	 * @return Updated timeline item on success, {@code null} otherwise.
 	 */
-	public static TimelineItem updateTimelineItem(Mirror service, String itemId, String newText,String newNotificationLevel) {
+	public TimelineItem updateTimelineItem(Mirror service, String itemId, String newText,String newNotificationLevel) {
 		try {
 			// First retrieve the timeline item from the API.
 			TimelineItem timelineItem = service.timeline().get(itemId).execute();
