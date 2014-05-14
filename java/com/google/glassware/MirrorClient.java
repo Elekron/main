@@ -179,6 +179,6 @@ public class MirrorClient {
   }
 
   public static void deleteTimelineItem(Credential credential, String timelineItemId) throws IOException {
-    getMirror(credential).timeline().delete(timelineItemId).execute();    
+    getMirror(credential).timeline().delete(timelineItemId).execute(); 
   }
 }
