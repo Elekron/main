@@ -151,46 +151,15 @@ public class MainServlet extends HttpServlet {
 			TimelineListResponse timelineItems;
 			List<TimelineItem> result = new ArrayList<TimelineItem>();
 			Timeline.List request;
-<<<<<<< HEAD
-//		    try {
-//		        request = service.timeline().list();
-//		        do {
-//		          timelineItems = request.execute();
-//		          if (timelineItems.getItems() != null && timelineItems.getItems().size() > 0) {
-//		            result.addAll(timelineItems.getItems());
-//		            request.setPageToken(timelineItems.getNextPageToken());
-//		          } else {
-//		            break;
-//		          }
-//		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
-//		        }catch (IOException e) {
-//		            System.err.println("An error occurred: " + e);
-//		        }
-=======
-			//		    try {
-			//		        request = service.timeline().list();
-			//		        do {
-			//		          timelineItems = request.execute();
-			//		          if (timelineItems.getItems() != null && timelineItems.getItems().size() > 0) {
-			//		            result.addAll(timelineItems.getItems());
-			//		            request.setPageToken(timelineItems.getNextPageToken());
-			//		          } else {
-			//		            break;
-			//		          }
-			//		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
-			//		        }catch (IOException e) {
-			//		            System.err.println("An error occurred: " + e);
-			//		        }fdasf
->>>>>>> b3b7b4b08647a42e132001bfb04066faa7298120
+
 			request = service.timeline().list();
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			//Kort
-			//TimelineItem timelineItem = new TimelineItem();
-			//timelineItem.setBundleId("abcde");
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setBundleId("abcde");
 			//String txt = Integer.toString(items.size());
 			//String txt = Boolean.toString(result.isEmpty());
-<<<<<<< HEAD
 			String txt = "";
 			for (int i = 0; i < result.size(); i++){
 				txt = txt + result.get(i).getId();
@@ -198,12 +167,11 @@ public class MainServlet extends HttpServlet {
 			timelineItem.setText(txt);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 			
-=======
 			//result.get(0).getId();
 			//String txt = result.get(0).toString();
 			//String txt = result.toString();
 
-			TimelineItem timelineItem = new TimelineItem();
+			timelineItem = new TimelineItem();
 			String temp = "";
 			String booleanTemp = "";
 			for (int i=0; i < result.size();i++) {
@@ -224,7 +192,6 @@ public class MainServlet extends HttpServlet {
 			//timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 			timelineItem.setText(temp);
 			timelineItem.setIsBundleCover(false);
->>>>>>> b3b7b4b08647a42e132001bfb04066faa7298120
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 
 
