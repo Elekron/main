@@ -130,7 +130,7 @@ public class MainServlet extends HttpServlet {
 			
 			
 			
-		} else if (req.getParameter("operation").equals("insertImg")) {
+		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
 			
 			TimelineItem timelineItem2 = new TimelineItem();
 			timelineItem2.setText("ASFDAFGAGFAG");
@@ -142,7 +142,7 @@ public class MainServlet extends HttpServlet {
 			////////////////////////////////
 
 
-		} else if (req.getParameter("operation").equals("insertPaginatedItem")) {
+		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 
 			//Lista
@@ -203,7 +203,7 @@ public class MainServlet extends HttpServlet {
 
 
 
-		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
+		} else if (req.getParameter("operation").equals("DeleteAllCard")) {
 			TimelineItem timelineItem = new TimelineItem();
 			timelineItem.setText("Welcome to the Glass Learn something");
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -213,27 +213,6 @@ public class MainServlet extends HttpServlet {
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 
 
-			/*LOG.fine("Inserting Timeline Item");
-			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Här kan du svar tillbaka på mitt kort genom att klicka på det så använda REPLY :) //Andreas");
-
-			List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-			// Built in actions
-			menuItemList.add(new MenuItem().setAction("REPLY"));
-			menuItemList.add(new MenuItem().setAction("READ_ALOUD"));
-
-			// And custom actions
-			List<MenuValue> menuValues = new ArrayList<MenuValue>();
-			menuValues.add(new MenuValue().setIconUrl(WebUtil.buildUrl(req, "/static/images/drill.png"))
-					.setDisplayName("Drill In"));
-			menuItemList.add(new MenuItem().setValues(menuValues).setId("drill").setAction("CUSTOM"));
-
-			timelineItem.setMenuItems(menuItemList);
-			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-
-			MirrorClient.insertTimelineItem(credential, timelineItem);
-
-			message = "A timeline item with actions has been inserted.";*/
 
 		} else if (req.getParameter("operation").equals("insertContact")) {
 			if (req.getParameter("iconUrl") == null || req.getParameter("name") == null) {
