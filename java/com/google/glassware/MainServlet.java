@@ -99,7 +99,6 @@ public class MainServlet extends HttpServlet {
 		String message = "";
 		//Boolean firstTimeNotification = true;
 
-
 		/////////////////////////////////
 		//	InsertNotification 
 		////////////////////////////////
@@ -128,9 +127,6 @@ public class MainServlet extends HttpServlet {
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 			
-			
-			
-			
 		/////////////////////////////////
 		//	UpdateCoverCard 
 		////////////////////////////////
@@ -158,63 +154,12 @@ public class MainServlet extends HttpServlet {
 		////////////////////////////////
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
-
-			//Lista
-			List<TimelineItem> items = new ArrayList<TimelineItem>();
-			Mirror service = MirrorClient.getMirror(credential);
-			TimelineListResponse timelineItems;
-			List<TimelineItem> result = new ArrayList<TimelineItem>();
-			Timeline.List request;
-
-			request = service.timeline().list();
-			timelineItems = request.execute();
-			result = timelineItems.getItems();
-			//Kort
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setBundleId("abcde");
-			//String txt = Integer.toString(items.size());
-			//String txt = Boolean.toString(result.isEmpty());
-			String txt = "";
-			for (int i = 0; i < result.size(); i++){
-				txt = txt + result.get(i).getId();
-			}
-			timelineItem.setText(txt);
+			timelineItem.setText("Bundle");
+			timelineItem.setBundleId("Moment");
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-			
-			//result.get(0).getId();
-			//String txt = result.get(0).toString();
-			//String txt = result.toString();
 
-			timelineItem = new TimelineItem();
-			String temp = "";
-			String booleanTemp = "";
-			for (int i=0; i < result.size();i++) {
-
-				temp += result.get(i).getId()+"<< >>";
-				booleanTemp +=result.get(i).getIsBundleCover().toString();
-				/*if(result.get(i).getIsBundleCover()){
-
-				}else{
-					MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
-				}*/
-				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
-
-
-			}
-
-			//timelineItem.setText(result.get(0).getId());
-			//timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-			timelineItem.setText(temp);
-			timelineItem.setIsBundleCover(false);
 			MirrorClient.insertTimelineItem(credential, timelineItem);
-
-
-			TimelineItem timelineItem2 = new TimelineItem();
-			timelineItem2.setText(booleanTemp);
-			timelineItem2.setIsBundleCover(false);
-			MirrorClient.insertTimelineItem(credential, timelineItem2);
-
-
 
 		/////////////////////////////////
 		//	DeleteAllCard 
