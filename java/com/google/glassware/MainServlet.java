@@ -150,7 +150,7 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			
-			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()).getId(), "Update", "DEFAULT");
+			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Update", "DEFAULT");
 
 		/////////////////////////////////
 		//	InsertBundleCard 
@@ -215,18 +215,29 @@ public class MainServlet extends HttpServlet {
 
 
 
-
+		/////////////////////////////////
+		//	DeleteAllCard 
+		////////////////////////////////
 		} else if (req.getParameter("operation").equals("DeleteAllCard")) {
-			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Welcome to the Glass Learn something");
-			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-			timelineItem.setBundleId("abcde");
-			timelineItem.setIsBundleCover(false);
+			
+			
+			List<TimelineItem> items = new ArrayList<TimelineItem>();
+			Mirror service = MirrorClient.getMirror(credential);
+			TimelineListResponse timelineItems;
+			List<TimelineItem> result = new ArrayList<TimelineItem>();
+			Timeline.List request;
 
-			MirrorClient.insertTimelineItem(credential, timelineItem);
-
-
-
+			request = service.timeline().list();
+			timelineItems = request.execute();
+			result = timelineItems.getItems();
+			
+			for (int i=0; i < result.size();i++) {
+				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
+			}
+			
+			/////////////////////////////////
+			//	 
+			////////////////////////////////
 		} else if (req.getParameter("operation").equals("insertContact")) {
 			if (req.getParameter("iconUrl") == null || req.getParameter("name") == null) {
 				message = "Must specify iconUrl and name to insert contact";
