@@ -50,6 +50,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MainServlet extends HttpServlet {
 	String firstcard = "test";
 	TimelineItem temp;
+	Boolean firstTimeNotification = true;
 
 	/**
 	 * Private class to process batch request results.
@@ -96,7 +97,7 @@ public class MainServlet extends HttpServlet {
 		String userId = AuthUtil.getUserId(req);
 		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
-		Boolean firstTimeNotification = true;
+		//Boolean firstTimeNotification = true;
 
 
 		/////////////////////////////////
