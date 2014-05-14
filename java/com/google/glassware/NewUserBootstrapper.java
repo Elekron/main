@@ -77,7 +77,7 @@ public class NewUserBootstrapper {
     //timelineItem.setPinScore(90);
     //
     
-    timelineItem.setText("Welcome to the Glass Lern something");
+    timelineItem.setText("Welcome to the Glass Learn something");
 	//timelineItem.setHtml("<article class='auto-paginate'>\n    <div class=\"overlay-full\"/>\n  <header>\n    <img src=\"https://mirror-api-playground.appspot.com/links/lincoln-avatar.png\"/>\n    <h1>@abraham_lincoln</h1>\n    <h2>Gettysburg, Pennsylvania</h2>\n  </header>\n  <section>\n    <p class=\"text-auto-size\">Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class=\"blue\">#liberty</span></p>\n <img src=\"http://wallpoper.com/images/00/44/86/76/dark-energy_00448676.jpg\">\n </section>\n</article>\n");
 
     timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
