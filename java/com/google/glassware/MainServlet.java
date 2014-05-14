@@ -29,6 +29,7 @@ import com.google.api.services.mirror.model.MenuItem;
 import com.google.api.services.mirror.model.MenuValue;
 import com.google.api.services.mirror.model.NotificationConfig;
 import com.google.api.services.mirror.model.TimelineItem;
+import com.google.api.services.mirror.model.TimelineListResponse;
 import com.google.common.collect.Lists;
 
 import java.io.IOException;
@@ -120,17 +121,18 @@ public class MainServlet extends HttpServlet {
 			//temp = timelineItem;
 
 			
-			//timelineItem.setText("Starta appen");
-			timelineItem.setHtml(PAGINATED_HTML);
+			timelineItem.setText("Starta appen");
+			//timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setBundleId("abcde");
 			List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-			menuItemList.add(new MenuItem().setAction("REPLY"));
-			menuItemList.add(new MenuItem().setAction("READ_ALOUD"));
+			//menuItemList.add(new MenuItem().setAction("REPLY"));
+			//menuItemList.add(new MenuItem().setAction("READ_ALOUD"));
 
 			List<MenuValue> menuValues = new ArrayList<MenuValue>();
 			menuValues.add(new MenuValue().setDisplayName("Startar appen"));
 
 			menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
+			
 			timelineItem.setMenuItems(menuItemList);
 
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -143,8 +145,11 @@ public class MainServlet extends HttpServlet {
 			/////////////////////////////////
 			//	Insert a HTML 
 			////////////////////////////////
+		
+		
 		} else if (req.getParameter("operation").equals("insertPaginatedItem")) {
 
+<<<<<<< HEAD
 			GetTimeLineList gtll = new GetTimeLineList();
 			List<TimelineItem> myResult = gtll.retrieveAllTimelineItems(MirrorClient.getMirror(credential));
 			String myString = "";
@@ -160,6 +165,49 @@ public class MainServlet extends HttpServlet {
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 			
 
+=======
+			//Lista
+			List<TimelineItem> items = new ArrayList<TimelineItem>();
+			Mirror service = MirrorClient.getMirror(credential);
+			TimelineListResponse timelineItems;
+			List<TimelineItem> result = new ArrayList<TimelineItem>();
+			Timeline.List request;
+//		    try {
+//		        request = service.timeline().list();
+//		        do {
+//		          timelineItems = request.execute();
+//		          if (timelineItems.getItems() != null && timelineItems.getItems().size() > 0) {
+//		            result.addAll(timelineItems.getItems());
+//		            request.setPageToken(timelineItems.getNextPageToken());
+//		          } else {
+//		            break;
+//		          }
+//		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
+//		        }catch (IOException e) {
+//		            System.err.println("An error occurred: " + e);
+//		        }
+			request = service.timeline().list();
+			timelineItems = request.execute();
+			result = timelineItems.getItems();
+		    //Kort
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setBundleId("abcde");
+			//String txt = Integer.toString(items.size());
+			//String txt = Boolean.toString(result.isEmpty());
+			String txt = result.get(0).toString();
+					//String txt = result.toString();
+			timelineItem.setText(txt);
+			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+			
+			MirrorClient.insertTimelineItem(credential, timelineItem);
+			
+			
+			
+		
+		        
+			
+			
+>>>>>>> 1033b03f92bd39e22601561f6ad30dc3b7ba2b65
 		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
 			LOG.fine("Inserting Timeline Item");
 			TimelineItem timelineItem = new TimelineItem();
