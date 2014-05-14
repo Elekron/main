@@ -169,7 +169,7 @@ public class MainServlet extends HttpServlet {
 //		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
 //		        }catch (IOException e) {
 //		            System.err.println("An error occurred: " + e);
-//		        }fdasf
+//		        }
 			request = service.timeline().list();
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
@@ -178,8 +178,10 @@ public class MainServlet extends HttpServlet {
 			timelineItem.setBundleId("abcde");
 			//String txt = Integer.toString(items.size());
 			//String txt = Boolean.toString(result.isEmpty());
-			String txt = result.get(0).toString();
-					//String txt = result.toString();
+			String txt = "";
+			for (int i = 0; i < result.size(); i++){
+				txt = txt + result.get(i).getId();
+			}
 			timelineItem.setText(txt);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 			
