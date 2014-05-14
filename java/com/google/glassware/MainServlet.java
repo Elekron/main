@@ -77,17 +77,6 @@ public class MainServlet extends HttpServlet {
 	public static final String CONTACT_ID = "com.google.glassware.contact.java-quick-start";
 	public static final String CONTACT_NAME = "Java Quick Start";
 
-	/*private static final String PAGINATED_HTML =
-      "<article class='auto-paginate'>"
-      + "<h2 class='blue text-large'>Did you know...?</h2>"
-      + "<p>Cats are <em class='yellow'>solar-powered.</em> The time they spend napping in "
-      + "direct sunlight is necessary to regenerate their internal batteries. Cats that do not "
-      + "receive sufficient charge may exhibit the following symptoms: lethargy, "
-      + "irritability, and disdainful glares. Cats will reactivate on their own automatically "
-      + "after a complete charge cycle; it is recommended that they be left undisturbed during "
-      + "this process to maximize your enjoyment of your cat.</p><br/><p>"
-      + "For more cat maintenance tips, tap to view the website!</p>"
-      + "</article>";*/
 
 	private static final String PAGINATED_HTML =
 			"<article class='author'>"
@@ -107,46 +96,52 @@ public class MainServlet extends HttpServlet {
 		String userId = AuthUtil.getUserId(req);
 		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
+		Boolean firstTimeNotification = true;
 
-		
+
 		/////////////////////////////////
-		//	Insert a Notification kort 
+		//	InsertNotification 
 		////////////////////////////////
-		if (req.getParameter("operation").equals("insertItem")) {
+		// Uppgift.Moment
+		///////////////////////////////
+		if (req.getParameter("operation").equals("InsertNotification")) {
 
-		
 			LOG.fine("Inserting Timeline Item");
+			
 			TimelineItem timelineItem = new TimelineItem();
-
-			//temp = timelineItem;
-
+			timelineItem.setText("Notification");
 			
-			timelineItem.setText("Starta appen");
-			//timelineItem.setHtml(PAGINATED_HTML);
-			timelineItem.setBundleId("abcde");
-			List<MenuItem> menuItemList = new ArrayList<MenuItem>();
-			//menuItemList.add(new MenuItem().setAction("REPLY"));
-			//menuItemList.add(new MenuItem().setAction("READ_ALOUD"));
-
-			List<MenuValue> menuValues = new ArrayList<MenuValue>();
-			menuValues.add(new MenuValue().setDisplayName("Startar appen"));
-
-			menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
-			
-			timelineItem.setMenuItems(menuItemList);
-
+			if(firstTimeNotification){
+				timelineItem.setBundleId("Moment");
+				timelineItem.setIsBundleCover(true);
+				
+				List<MenuItem> menuItemList = new ArrayList<MenuItem>();
+				List<MenuValue> menuValues = new ArrayList<MenuValue>();
+				menuValues.add(new MenuValue().setDisplayName("Starta Uppgiften"));
+				menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
+				timelineItem.setMenuItems(menuItemList);
+				firstTimeNotification=false;
+			}
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
-			//timelineItem.setId("Pannkaka");
-			//firstcard = timelineItem.getId();
-
 			MirrorClient.insertTimelineItem(credential, timelineItem);
+			
+			
+			
+			
+			
+		} else if (req.getParameter("operation").equals("insertImg")) {
+			
+			TimelineItem timelineItem2 = new TimelineItem();
+			timelineItem2.setText("ASFDAFGAGFAG");
+			timelineItem2.setIsBundleCover(false);
+			MirrorClient.insertTimelineItem(credential, timelineItem2);
 			
 			/////////////////////////////////
 			//	Insert a HTML 
 			////////////////////////////////
-		
-		
+
+
 		} else if (req.getParameter("operation").equals("insertPaginatedItem")) {
 
 
@@ -156,44 +151,75 @@ public class MainServlet extends HttpServlet {
 			TimelineListResponse timelineItems;
 			List<TimelineItem> result = new ArrayList<TimelineItem>();
 			Timeline.List request;
-//		    try {
-//		        request = service.timeline().list();
-//		        do {
-//		          timelineItems = request.execute();
-//		          if (timelineItems.getItems() != null && timelineItems.getItems().size() > 0) {
-//		            result.addAll(timelineItems.getItems());
-//		            request.setPageToken(timelineItems.getNextPageToken());
-//		          } else {
-//		            break;
-//		          }
-//		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
-//		        }catch (IOException e) {
-//		            System.err.println("An error occurred: " + e);
-//		        }fdasf
+			//		    try {
+			//		        request = service.timeline().list();
+			//		        do {
+			//		          timelineItems = request.execute();
+			//		          if (timelineItems.getItems() != null && timelineItems.getItems().size() > 0) {
+			//		            result.addAll(timelineItems.getItems());
+			//		            request.setPageToken(timelineItems.getNextPageToken());
+			//		          } else {
+			//		            break;
+			//		          }
+			//		        }while (request.getPageToken() != null && request.getPageToken().length() > 0);
+			//		        }catch (IOException e) {
+			//		            System.err.println("An error occurred: " + e);
+			//		        }fdasf
 			request = service.timeline().list();
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
-		    //Kort
-			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setBundleId("abcde");
+			//Kort
+			//TimelineItem timelineItem = new TimelineItem();
+			//timelineItem.setBundleId("abcde");
 			//String txt = Integer.toString(items.size());
 			//String txt = Boolean.toString(result.isEmpty());
-			String txt = result.get(0).toString();
-					//String txt = result.toString();
-			timelineItem.setText(txt);
-			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
-			
+			//result.get(0).getId();
+			//String txt = result.get(0).toString();
+			//String txt = result.toString();
+
+			TimelineItem timelineItem = new TimelineItem();
+			String temp = "";
+			String booleanTemp = "";
+			for (int i=0; i < result.size();i++) {
+
+				temp += result.get(i).getId()+"<< >>";
+				booleanTemp +=result.get(i).getIsBundleCover().toString();
+				/*if(result.get(i).getIsBundleCover()){
+
+				}else{
+					MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
+				}*/
+				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
+
+
+			}
+
+			//timelineItem.setText(result.get(0).getId());
+			//timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+			timelineItem.setText(temp);
+			timelineItem.setIsBundleCover(false);
 			MirrorClient.insertTimelineItem(credential, timelineItem);
-			
-			
-			
-		
-		        
-			
-			
+
+
+			TimelineItem timelineItem2 = new TimelineItem();
+			timelineItem2.setText(booleanTemp);
+			timelineItem2.setIsBundleCover(false);
+			MirrorClient.insertTimelineItem(credential, timelineItem2);
+
+
+
 
 		} else if (req.getParameter("operation").equals("insertItemWithAction")) {
-			LOG.fine("Inserting Timeline Item");
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setText("Welcome to the Glass Learn something");
+			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+			timelineItem.setBundleId("abcde");
+			timelineItem.setIsBundleCover(false);
+
+			MirrorClient.insertTimelineItem(credential, timelineItem);
+
+
+			/*LOG.fine("Inserting Timeline Item");
 			TimelineItem timelineItem = new TimelineItem();
 			timelineItem.setText("Här kan du svar tillbaka på mitt kort genom att klicka på det så använda REPLY :) //Andreas");
 
@@ -213,7 +239,7 @@ public class MainServlet extends HttpServlet {
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 
-			message = "A timeline item with actions has been inserted.";
+			message = "A timeline item with actions has been inserted.";*/
 
 		} else if (req.getParameter("operation").equals("insertContact")) {
 			if (req.getParameter("iconUrl") == null || req.getParameter("name") == null) {
@@ -253,6 +279,7 @@ public class MainServlet extends HttpServlet {
 						"Total user count is " + users.size() + ". Aborting broadcast " + "to save your quota.";
 			} else {
 				TimelineItem allUsersItem = new TimelineItem();
+				//allUsersItem.setIsBundleCover(false);
 				allUsersItem.setText("Hello Everyone!"+firstcard);
 
 				BatchRequest batch = MirrorClient.getMirror(null).batch();
@@ -266,7 +293,7 @@ public class MainServlet extends HttpServlet {
 					//temp.setText("Det funkar eller");
 					//MirrorClient.getMirror(userCredential).timeline().update(firstcard, temp).execute();
 				}
-				
+
 
 				batch.execute();
 				message =
@@ -282,13 +309,13 @@ public class MainServlet extends HttpServlet {
 			MirrorClient.deleteTimelineItem(credential, req.getParameter("itemId"));
 			UpdateMirror um = new UpdateMirror();
 			um.updateTimelineItem(MirrorClient.getMirror(credential), req.getParameter("itemId"), "Hej på dig", "DEFAULT");
-			
+
 			/*TimelineItem timelineItem3 = new TimelineItem();
 			timelineItem3.setText(req.getParameter("itemId"));
 			timelineItem3.setBundleId("abcde");
 			MirrorClient.insertTimelineItem(credential, timelineItem3);*/
-			
-			
+
+
 			message = "Timeline Item has been deleted.";
 
 		} else {
