@@ -25,23 +25,23 @@ public class GetJsonData {
 			JSONObject jsonObject = (JSONObject) obj;
 
 			String notificationRubrik = (String) jsonObject.get("notificationRubrik");
-			System.out.println(notificationRubrik);
+			//System.out.println(notificationRubrik);
 
 			notificationText =  (String) jsonObject.get("notificationText");
-			System.out.println(notificationText);
+			//System.out.println(notificationText);
 
 			notificationImgsrc =  (String) jsonObject.get("notificationImgsrc");
-			System.out.println(notificationImgsrc);
+			//System.out.println(notificationImgsrc);
 
 			coverText =  (String) jsonObject.get("coverText");
-			System.out.println(coverText);
+			//System.out.println(coverText);
 
 			// loop array
 			JSONArray msg = (JSONArray) jsonObject.get("coverCard");
 			Iterator<String> iterator = msg.iterator();
 			while (iterator.hasNext()) 
 			{
-				System.out.println(iterator.next());
+				//System.out.println(iterator.next());
 			}
 
 		} catch (FileNotFoundException e) 
