@@ -82,10 +82,13 @@ public class MainServlet extends HttpServlet {
 
 	private static final String PAGINATED_HTML =
 			"<article class='author'>"
-					+ "<img src='https://mirror-api-playground.appspot.com/links/filoli-spring-fling.jpg' width='100%' height='100%'>"
-					+ "<div class='overlay-full'/>"
-					+ "<section><img src='https://mirror-api-playground.appspot.com/links/lincoln-avatar.png'/><h1>@abraham_lincoln</h1><h2>Gettysburg, Pennsylvania</h2>"
-					+ "Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class='blue'>#liberty</span></section>"
+					+ "<img src='http://littleswedenart.files.wordpress.com/2012/11/ok_glass_wp_hallgren.jpg?w=700&h=' width='100%' height='100%'>"
+					//+ "<div class='overlay-full'/><section>Ta upp mobilen och använd WallTagger mot konstverket som X håller upp</section>"
+					+ "<div class='overlay-full'/><section><a href='"
+					+ "https://www.google.com/maps/place/Tvistev%C3%A4gen+46/@63.8166591,20.3176932,17z/data=!3m1!4b1!4m2!3m1!1s0x467c5afa16a46649:0x4fc0ec6289014d5a"
+					+ "'>maps</a></section>"
+					//+ "<section><img src='https://mirror-api-playground.appspot.com/links/lincoln-avatar.png'/><h1>@abraham_lincoln</h1><h2>Gettysburg, Pennsylvania</h2>"
+					//+ "Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class='blue'>#liberty</span></section>"
 					+ "</article>";
 
 
@@ -110,7 +113,8 @@ public class MainServlet extends HttpServlet {
 			LOG.fine("Inserting Timeline Item");
 			
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Notification");
+			//timelineItem.setText("Notification");
+			timelineItem.setText("Notis: Let’s begin!");
 			
 			if(firstTimeNotification){
 				timelineItem.setBundleId("Moment");
@@ -148,7 +152,7 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			
-			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Update", "DEFAULT");
+			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
 
 		/////////////////////////////////
 		//	InsertBundleCard 
@@ -156,8 +160,9 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Bundle"+counter);
 			timelineItem.setBundleId("Moment");
+			//timelineItem.setText("Bundle"+counter);
+			timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
