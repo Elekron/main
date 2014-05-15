@@ -41,7 +41,7 @@ public class GetJsonData {
 			Iterator<String> iterator = msg.iterator();
 			while (iterator.hasNext()) 
 			{
-				//System.out.println(iterator.next());
+				System.out.println(iterator.next());
 			}
 
 		} catch (FileNotFoundException e) 
