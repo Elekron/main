@@ -74,6 +74,65 @@ public class MainServlet extends HttpServlet {
 			LOG.info("Failed to insert item: " + error.getMessage());
 		}
 	}
+	public class CheckIfPinned implements Runnable 
+	{               
+		HttpServletRequest req;
+		
+		public CheckIfPinned(HttpServletRequest request) {
+		       req = request;
+		}
+	        public void run()                       
+	        {
+	        	UpdateMirror um = new UpdateMirror();
+        		String userId = AuthUtil.getUserId(req);
+        		Credential credential = null;
+        		Mirror service = MirrorClient.getMirror(credential);
+        		TimelineListResponse timelineItems;
+        		try {
+					credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+        		
+	        	while(true){
+	        	try {
+	        		
+	        		
+				
+	        		List<TimelineItem> items = new ArrayList<TimelineItem>();
+	        		List<TimelineItem> result = new ArrayList<TimelineItem>();
+	        		Timeline.List request;
+
+	        		request = service.timeline().list();
+	        		timelineItems = request.execute();
+	        		result = timelineItems.getItems();
+				
+	        		System.out.println("Tråd");
+	        		try{
+	        			if(result.get(0).getIsPinned()){
+						System.out.println("Pinnat!");
+						Thread.currentThread().stop();
+						//um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
+	        			}
+	        		}catch(NullPointerException e){
+	        			System.out.println("null");
+	        		}
+	        
+	        	} catch (IOException e1) {
+	        		e1.printStackTrace();
+			}
+	        	try {
+	        		Thread.currentThread().sleep(1000);
+					//Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        	
+	        	}
+	        }
+		}
 
 	private static final Logger LOG = Logger.getLogger(MainServlet.class.getSimpleName());
 	public static final String CONTACT_ID = "com.google.glassware.contact.java-quick-start";
@@ -130,6 +189,11 @@ public class MainServlet extends HttpServlet {
 				timelineItem.setMenuItems(menuItemList);
 				
 				firstTimeNotification=false;
+				
+				//Starta tråd för att lyssna när kortet blir pinnat
+				UpdateMirror um = new UpdateMirror();
+				Runnable r = new CheckIfPinned(req);
+				new Thread(r).start();
 			}
 			
 			
@@ -143,7 +207,6 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
 			
 			UpdateMirror um = new UpdateMirror();
-			
 			/////////////////////////////////
 			//
 			/////////////////////////////////
@@ -163,7 +226,7 @@ public class MainServlet extends HttpServlet {
 			for(int i = 0; i < result.size(); i++){
 				try{
 					if(result.get(i).getIsPinned()){
-						um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
+						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");
