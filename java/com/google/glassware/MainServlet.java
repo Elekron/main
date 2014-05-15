@@ -184,7 +184,7 @@ public class MainServlet extends HttpServlet {
 		String message = "";
 		//Boolean firstTimeNotification = true;
 
-		/////////////////////////////////
+		//////////////////////////////////
 		//	InsertNotification 
 		////////////////////////////////
 		// Uppgift.Moment
