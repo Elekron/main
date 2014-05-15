@@ -19,21 +19,16 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
 import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.services.mirror.Mirror;
 import com.google.api.services.mirror.Mirror.Timeline;
-import com.google.api.services.mirror.model.Command;
-import com.google.api.services.mirror.model.Contact;
 import com.google.api.services.mirror.model.MenuItem;
 import com.google.api.services.mirror.model.MenuValue;
 import com.google.api.services.mirror.model.NotificationConfig;
 import com.google.api.services.mirror.model.TimelineItem;
 import com.google.api.services.mirror.model.TimelineListResponse;
-import com.google.common.collect.Lists;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -48,11 +43,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jenny Murphy - http://google.com/+JennyMurphy
  */
 public class MainServlet extends HttpServlet {
-	String firstcard = "test";
-	TimelineItem temp;
-	Boolean firstTimeNotification = true;
-	int counter = 0;  
+	
+	private TimelineItem temp;
+	private Boolean firstTimeNotification = true;
+	static int counter = 0;
+	private Credential credential;
 
+	
 	/**
 	 * Private class to process batch request results.
 	 * <p/>
@@ -62,6 +59,7 @@ public class MainServlet extends HttpServlet {
 	private final class BatchCallback extends JsonBatchCallback<TimelineItem> {
 		private int success = 0;
 		private int failure = 0;
+		
 
 		@Override
 		public void onSuccess(TimelineItem item, HttpHeaders headers) throws IOException {
@@ -81,78 +79,62 @@ public class MainServlet extends HttpServlet {
 	 * my thread 
 	 */
 	private class CheckIfPin implements Runnable {
-
-		String temp="";
-		int i = 0;
-		Credential credential;
-
-
+		/*
+		 * Define variable 
+		 */
 		List<TimelineItem> items = new ArrayList<TimelineItem>();
 		Mirror service;
 		TimelineListResponse timelineItems;
 		List<TimelineItem> result = new ArrayList<TimelineItem>();
 		Timeline.List request;
+		UpdateMirror um = new UpdateMirror();
 
 
-
-		public CheckIfPin(String temp, Credential credential){
-			this.temp = temp;
-			this.credential = credential;
-
-		}
-
+		/*
+		 * Cards that create and update bundle in a second thread if is pin 
+		 * Stop if they not pin card in 5 min 
+		 */
 		public void run() {
-
-			//updateStuf();
-			int j = 5000;
-			UpdateMirror um = new UpdateMirror();
-
-			while(true) {
-
+			for (int i = 0; i < 100; i++) {
 				try {
-					Thread.sleep(j);
+					Thread.sleep(3000);
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
-				updateStuf();
-				
-				j = 3000;
-				System.out.println("Hello from me "+ temp);
+				updateConnection();
+				System.out.println("Its updateConnection");
 				try{
 					if(result.get(result.size()-1).getIsPinned()){
 						System.out.println("Is pin");
 						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
+						CreateCards(); 
 						Thread.currentThread().stop();
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");
 				}
-				i++;
-
-				if(i==6){
-					System.out.println("Its stop");
-					Thread.currentThread().stop();
-				}
 			}
+			System.out.println("Its stop");
+			Thread.currentThread().stop();
 		}
 
-		public void updateStuf(){
+		/*
+		 * updateConnection
+		 * get new timeline items data 
+		 */
+		public void updateConnection(){
 			service = MirrorClient.getMirror(credential);
 			try {
 				request = service.timeline().list();
 				timelineItems = request.execute();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
 			result = timelineItems.getItems();
 		}
 	}
 
-	
 	
 	public static final String CONTACT_ID = "com.google.glassware.contact.java-quick-start";
 	public static final String CONTACT_NAME = "Java Quick Start";
@@ -169,7 +151,25 @@ public class MainServlet extends HttpServlet {
 					//+ "Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in <span class='blue'>#liberty</span></section>"
 					+ "</article>";
 
+	/*
+	 * 	Create bundle card 
+	 */
+	public void CreateCards(){
+		TimelineItem timelineItem = new TimelineItem();
+		timelineItem.setBundleId("Moment");
+		timelineItem.setText("Bundle"+counter);
+		//timelineItem.setHtml(PAGINATED_HTML);
+		timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
+		try {
+			MirrorClient.insertTimelineItem(credential, timelineItem);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		counter++;
+	}
+	
 	/**
 	 * Do stuff when buttons on index.jsp are clicked
 	 */
@@ -180,9 +180,8 @@ public class MainServlet extends HttpServlet {
 		test.getData();
 
 		String userId = AuthUtil.getUserId(req);
-		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
+		credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
-		//Boolean firstTimeNotification = true;
 
 		//////////////////////////////////
 		//	InsertNotification 
@@ -208,7 +207,7 @@ public class MainServlet extends HttpServlet {
 				timelineItem.setMenuItems(menuItemList);
 
 				firstTimeNotification=false;
-				Runnable runTemp = new CheckIfPin("Hello", credential);
+				Runnable runTemp = new CheckIfPin();
 				new Thread(runTemp).start();
 			}
 
@@ -307,7 +306,7 @@ public class MainServlet extends HttpServlet {
 			} else {
 				TimelineItem allUsersItem = new TimelineItem();
 				//allUsersItem.setIsBundleCover(false);
-				allUsersItem.setText("Hello Everyone!"+firstcard);
+				allUsersItem.setText("Hello Everyone!");
 
 				BatchRequest batch = MirrorClient.getMirror(null).batch();
 				BatchCallback callback = new BatchCallback();
