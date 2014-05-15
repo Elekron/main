@@ -2,6 +2,7 @@ package com.google.glassware;
 
 public class GetJsonData {
 
+<<<<<<< HEAD
 	
 	public void getData(){
 		
@@ -10,3 +11,6 @@ public class GetJsonData {
 	
 	
 }
+=======
+}//hhh
+>>>>>>> FETCH_HEAD
