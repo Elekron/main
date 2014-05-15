@@ -163,6 +163,12 @@ limitations under the License.
 
 
       <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="InsertStartCard">
+        <button class="btn btn-block" type="submit">
+          InsertStartCard
+        </button>
+      </form>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
         <input type="hidden" name="operation" value="InsertNotification">
         <button class="btn btn-block" type="submit">
           Insert Notification

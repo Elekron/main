@@ -108,7 +108,7 @@ public class MainServlet extends HttpServlet {
 					if(result.get(result.size()-1).getIsPinned()){
 						System.out.println("Is pin");
 						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
-						CreateCards(); 
+						CreateBundleCards(); 
 						Thread.currentThread().stop();
 					}
 				}catch(NullPointerException e){
@@ -154,9 +154,9 @@ public class MainServlet extends HttpServlet {
 	/*
 	 * 	Create bundle card 
 	 */
-	public void CreateCards(){
+	public void CreateBundleCards(){
 		TimelineItem timelineItem = new TimelineItem();
-		timelineItem.setBundleId("Moment");
+		timelineItem.setBundleId("moment");
 		timelineItem.setText("Bundle"+counter);
 		//timelineItem.setHtml(PAGINATED_HTML);
 		timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -186,9 +186,9 @@ public class MainServlet extends HttpServlet {
 		//////////////////////////////////
 		//	InsertNotification 
 		////////////////////////////////
-		// Uppgift.Moment
+		// Uppgift.moment
 		////////////////////////////////
-		if (req.getParameter("operation").equals("InsertNotification")) {
+		if (req.getParameter("operation").equals("InsertStartCard")) {
 
 			LOG.fine("Inserting Timeline Item");
 
@@ -197,7 +197,7 @@ public class MainServlet extends HttpServlet {
 			//timelineItem.setHtml(test.getData());
 
 			if(firstTimeNotification){
-				timelineItem.setBundleId("Moment");
+				timelineItem.setBundleId("moment");
 				timelineItem.setIsBundleCover(true);
 
 				List<MenuItem> menuItemList = new ArrayList<MenuItem>();
@@ -218,6 +218,44 @@ public class MainServlet extends HttpServlet {
 			/////////////////////////////////
 			//	UpdateCoverCard 
 			////////////////////////////////
+			
+		} else if (req.getParameter("operation").equals("InsertNotification")) {
+			
+			
+			UpdateMirror um = new UpdateMirror();
+
+			List<TimelineItem> items = new ArrayList<TimelineItem>();
+			Mirror service = MirrorClient.getMirror(credential);
+			TimelineListResponse timelineItems;
+			List<TimelineItem> result = new ArrayList<TimelineItem>();
+			Timeline.List request;
+
+			request = service.timeline().list();
+			timelineItems = request.execute();
+			result = timelineItems.getItems();
+
+
+
+			for(int i = 0; i < result.size(); i++){
+				try{
+					if(result.get(i).getIsBundleCover()){
+						
+						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: Experiment", "DEFAULT");
+					}
+				}catch(NullPointerException e){
+					System.out.println("null");
+					MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
+				}
+			}
+			
+			CreateBundleCards();
+
+			TimelineItem timelineItem = new TimelineItem();
+			timelineItem.setText("Notis: Första utmaningen!");
+			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
+			MirrorClient.insertTimelineItem(credential, timelineItem);
+			
+			
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
 
 			UpdateMirror um = new UpdateMirror();
@@ -256,7 +294,7 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setBundleId("Moment");
+			timelineItem.setBundleId("moment");
 			timelineItem.setText("Bundle"+counter);
 			//timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
