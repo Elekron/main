@@ -97,7 +97,10 @@ public class MainServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
-
+		
+		GetJsonData test = new GetJsonData();
+		test.getData();
+		
 		String userId = AuthUtil.getUserId(req);
 		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
@@ -114,7 +117,7 @@ public class MainServlet extends HttpServlet {
 			
 			TimelineItem timelineItem = new TimelineItem();
 			//timelineItem.setText("Notification");
-			timelineItem.setText("Notis: Let’s begin!");
+			timelineItem.setHtml(test.getData());
 			
 			if(firstTimeNotification){
 				timelineItem.setBundleId("Moment");
@@ -174,8 +177,8 @@ public class MainServlet extends HttpServlet {
 
 			TimelineItem timelineItem = new TimelineItem();
 			timelineItem.setBundleId("Moment");
-			//timelineItem.setText("Bundle"+counter);
-			timelineItem.setHtml(PAGINATED_HTML);
+			timelineItem.setText("Bundle"+counter);
+			//timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
