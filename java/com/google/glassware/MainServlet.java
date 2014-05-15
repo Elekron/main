@@ -117,7 +117,7 @@ public class MainServlet extends HttpServlet {
 			
 			TimelineItem timelineItem = new TimelineItem();
 			//timelineItem.setText("Notification");
-			timelineItem.setHtml(test.getData());
+			//timelineItem.setHtml(test.getData());
 			
 			if(firstTimeNotification){
 				timelineItem.setBundleId("Moment");
@@ -131,6 +131,7 @@ public class MainServlet extends HttpServlet {
 				
 				firstTimeNotification=false;
 			}
+			timelineItem.setHtml(test.getData());
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
