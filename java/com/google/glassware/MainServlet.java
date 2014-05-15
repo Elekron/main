@@ -76,8 +76,87 @@ public class MainServlet extends HttpServlet {
 	}
 
 	private static final Logger LOG = Logger.getLogger(MainServlet.class.getSimpleName());
+
+
+	/*
+	 * my thread 
+	 */
+	private class CheckIfPin implements Runnable {
+
+		String temp="";
+		int i = 0;
+		Credential credential;
+
+
+		List<TimelineItem> items = new ArrayList<TimelineItem>();
+		Mirror service;
+		TimelineListResponse timelineItems;
+		List<TimelineItem> result = new ArrayList<TimelineItem>();
+		Timeline.List request;
+
+
+
+		public CheckIfPin(String temp, Credential credential){
+			this.temp = temp;
+			this.credential = credential;
+
+		}
+
+		public void run() {
+
+			//updateStuf();
+			int j = 5000;
+			UpdateMirror um = new UpdateMirror();
+
+			while(true) {
+
+				try {
+					Thread.sleep(j);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				updateStuf();
+				
+				j = 3000;
+				System.out.println("Hello from me "+ temp);
+				try{
+					if(result.get(result.size()-1).getIsPinned()){
+						System.out.println("Is pin");
+						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
+						Thread.currentThread().stop();
+					}
+				}catch(NullPointerException e){
+					System.out.println("null");
+				}
+				i++;
+
+				if(i==6){
+					System.out.println("Its stop");
+					Thread.currentThread().stop();
+				}
+			}
+		}
+
+		public void updateStuf(){
+			service = MirrorClient.getMirror(credential);
+			try {
+				request = service.timeline().list();
+				timelineItems = request.execute();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			result = timelineItems.getItems();
+		}
+	}
+
 	public static final String CONTACT_ID = "com.google.glassware.contact.java-quick-start";
 	public static final String CONTACT_NAME = "Java Quick Start";
+
+
 
 
 	private static final String PAGINATED_HTML =
@@ -97,10 +176,10 @@ public class MainServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		
+
 		GetJsonData test = new GetJsonData();
 		test.getData();
-		
+
 		String userId = AuthUtil.getUserId(req);
 		Credential credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
 		String message = "";
@@ -114,36 +193,41 @@ public class MainServlet extends HttpServlet {
 		if (req.getParameter("operation").equals("InsertNotification")) {
 
 			LOG.fine("Inserting Timeline Item");
-			
+
 			TimelineItem timelineItem = new TimelineItem();
-			//timelineItem.setText("Notification");
-			timelineItem.setHtml(test.getData());
-			
+			timelineItem.setText("Notification");
+			//timelineItem.setHtml(test.getData());
+
 			if(firstTimeNotification){
 				timelineItem.setBundleId("Moment");
 				timelineItem.setIsBundleCover(true);
-				
+
 				List<MenuItem> menuItemList = new ArrayList<MenuItem>();
 				List<MenuValue> menuValues = new ArrayList<MenuValue>();
 				menuValues.add(new MenuValue().setDisplayName("Starta Uppgiften"));
 				menuItemList.add(new MenuItem().setValues(menuValues).setAction("TOGGLE_PINNED"));
 				timelineItem.setMenuItems(menuItemList);
-				
+
 				firstTimeNotification=false;
 			}
-			
-			
+
+
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
-			
-		/////////////////////////////////
-		//	UpdateCoverCard 
-		////////////////////////////////
+
+			Runnable runTemp = new CheckIfPin("Hello", credential);
+			new Thread(runTemp).start();
+
+
+
+			/////////////////////////////////
+			//	UpdateCoverCard 
+			////////////////////////////////
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
-			
+
 			UpdateMirror um = new UpdateMirror();
-			
+
 			/////////////////////////////////
 			//
 			/////////////////////////////////
@@ -157,9 +241,9 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			//System.out.println(result.size() + "  " + result.get(result.size()-1).getIsPinned());
-			
-			
-			
+
+
+
 			for(int i = 0; i < result.size(); i++){
 				try{
 					if(result.get(i).getIsPinned()){
@@ -169,12 +253,12 @@ public class MainServlet extends HttpServlet {
 					System.out.println("null");
 				}
 			}
-			
+
 			//um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
 
-		/////////////////////////////////
-		//	InsertBundleCard 
-		////////////////////////////////
+			/////////////////////////////////
+			//	InsertBundleCard 
+			////////////////////////////////
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
@@ -185,13 +269,13 @@ public class MainServlet extends HttpServlet {
 
 			MirrorClient.insertTimelineItem(credential, timelineItem);
 			counter++;
-			
-		/////////////////////////////////
-		//	DeleteAllCard 
-		////////////////////////////////
+
+			/////////////////////////////////
+			//	DeleteAllCard 
+			////////////////////////////////
 		} else if (req.getParameter("operation").equals("DeleteAllCard")) {
-			
-			
+
+
 			List<TimelineItem> items = new ArrayList<TimelineItem>();
 			Mirror service = MirrorClient.getMirror(credential);
 			TimelineListResponse timelineItems;
@@ -201,18 +285,18 @@ public class MainServlet extends HttpServlet {
 			request = service.timeline().list();
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
-			
-			
-			
+
+
+
 			for (int i=0; i < result.size();i++) {
 				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
 			}
-			
+
 			firstTimeNotification = true;
-			
-		/////////////////////////////////
-		//	 insertItemAllUsers
-		////////////////////////////////
+
+			/////////////////////////////////
+			//	 insertItemAllUsers
+			////////////////////////////////
 		} else if (req.getParameter("operation").equals("insertItemAllUsers")) {
 			if (req.getServerName().contains("glass-java-starter-demo.appspot.com")) {
 				message = "This function is disabled on the demo instance.";
