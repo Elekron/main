@@ -151,8 +151,21 @@ public class MainServlet extends HttpServlet {
 			request = service.timeline().list();
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
+			//System.out.println(result.size() + "  " + result.get(result.size()-1).getIsPinned());
 			
-			um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
+			
+			
+			for(int i = 0; i < result.size(); i++){
+				try{
+					if(result.get(i).getIsPinned()){
+						um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
+					}
+				}catch(NullPointerException e){
+					System.out.println("null");
+				}
+			}
+			
+			//um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
 
 		/////////////////////////////////
 		//	InsertBundleCard 
@@ -184,9 +197,13 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			
+			
+			
 			for (int i=0; i < result.size();i++) {
 				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
 			}
+			
+			firstTimeNotification = true;
 			
 		/////////////////////////////////
 		//	 insertItemAllUsers
