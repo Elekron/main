@@ -31,6 +31,7 @@ import com.google.api.services.mirror.model.TimelineListResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServlet;
@@ -48,6 +49,10 @@ public class MainServlet extends HttpServlet {
 	private Boolean firstTimeNotification = true;
 	static int counter = 0;
 	private Credential credential;
+
+	
+	private Stack databas = new Stack();
+	
 
 	
 	/**
@@ -107,8 +112,16 @@ public class MainServlet extends HttpServlet {
 				try{
 					if(result.get(result.size()-1).getIsPinned()){
 						System.out.println("Is pin");
+						databas.pop();
 						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
-						CreateBundleCards(); 
+						
+						Stack<String> bundleStack = new Stack<String>();
+						bundleStack = (Stack)databas.pop();
+						
+						while(!bundleStack.empty()){
+							CreateBundleCards((String)bundleStack.pop()); 
+						}
+						
 						Thread.currentThread().stop();
 					}
 				}catch(NullPointerException e){
@@ -154,11 +167,11 @@ public class MainServlet extends HttpServlet {
 	/*
 	 * 	Create bundle card 
 	 */
-	public void CreateBundleCards(){
+	public void CreateBundleCards(String bundleCard){
 		TimelineItem timelineItem = new TimelineItem();
 		timelineItem.setBundleId("moment");
-		timelineItem.setText("Bundle"+counter);
-		//timelineItem.setHtml(PAGINATED_HTML);
+		//timelineItem.setText("Bundle"+counter);
+		timelineItem.setHtml(bundleCard);
 		timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 
 		try {
@@ -176,8 +189,8 @@ public class MainServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
-		GetJsonData test = new GetJsonData();
-		test.getData();
+
+
 
 		String userId = AuthUtil.getUserId(req);
 		credential = AuthUtil.newAuthorizationCodeFlow().loadCredential(userId);
@@ -189,12 +202,17 @@ public class MainServlet extends HttpServlet {
 		// Uppgift.moment
 		////////////////////////////////
 		if (req.getParameter("operation").equals("InsertStartCard")) {
-
+			GetJsonData jsonData = new GetJsonData();
+			jsonData.writeToStack();
+			//jsonData.printStack();
+			databas = jsonData.getStack();
+			
+			
 			LOG.fine("Inserting Timeline Item");
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Notification");
-			//timelineItem.setHtml(test.getData());
+			//timelineItem.setText("Notification");
+			timelineItem.setHtml((String)databas.pop());
 
 			if(firstTimeNotification){
 				timelineItem.setBundleId("moment");
@@ -234,7 +252,13 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 
+			CreateBundleCards("Heloo");
 
+			TimelineItem timelineItem = new TimelineItem();
+			//timelineItem.setText("Notis: Första utmaningen!");
+			timelineItem.setHtml((String)databas.pop());
+			databas.pop();
+			
 
 			for(int i = 0; i < result.size(); i++){
 				try{
@@ -248,12 +272,20 @@ public class MainServlet extends HttpServlet {
 				}
 			}
 			
-			CreateBundleCards();
-
-			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setText("Notis: Första utmaningen!");
+			
+			
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
 			MirrorClient.insertTimelineItem(credential, timelineItem);
+			
+			
+			Stack<String> bundleStack = new Stack<String>();
+			bundleStack = (Stack)databas.pop();
+			
+			
+			while(!bundleStack.empty()){
+				CreateBundleCards((String)bundleStack.pop()); 
+			} 
+			
 			
 			
 		} else if (req.getParameter("operation").equals("UpdateCoverCard")) {
