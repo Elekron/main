@@ -24,7 +24,8 @@ public class UpdateMirror {
 			// First retrieve the timeline item from the API.
 			TimelineItem timelineItem = service.timeline().get(itemId).execute();
 			// Update the timeline item's metadata.
-			timelineItem.setText(newText);
+			//timelineItem.setText(newText);
+			timelineItem.setHtml(newText);
 			if (newNotificationLevel != null && newNotificationLevel.length() > 0) {
 				timelineItem.setNotification(new NotificationConfig().setLevel(newNotificationLevel));
 			} else {

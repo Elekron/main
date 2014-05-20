@@ -112,8 +112,9 @@ public class MainServlet extends HttpServlet {
 				try{
 					if(result.get(result.size()-1).getIsPinned()){
 						System.out.println("Is pin");
-						databas.pop();
-						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
+						//databas.pop();
+						//um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
+						um.updateTimelineItem(service, result.get(result.size()-1).getId(), (String)databas.pop(), "DEFAULT");
 						
 						Stack<String> bundleStack = new Stack<String>();
 						bundleStack = (Stack)databas.pop();
@@ -169,7 +170,7 @@ public class MainServlet extends HttpServlet {
 	 */
 	public void CreateBundleCards(String bundleCard){
 		TimelineItem timelineItem = new TimelineItem();
-		timelineItem.setBundleId("moment");
+		timelineItem.setBundleId("moment2");
 		//timelineItem.setText("Bundle"+counter);
 		timelineItem.setHtml(bundleCard);
 		timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -215,7 +216,7 @@ public class MainServlet extends HttpServlet {
 			timelineItem.setHtml((String)databas.pop());
 
 			if(firstTimeNotification){
-				timelineItem.setBundleId("moment");
+				timelineItem.setBundleId("moment2");
 				timelineItem.setIsBundleCover(true);
 
 				List<MenuItem> menuItemList = new ArrayList<MenuItem>();
@@ -257,14 +258,15 @@ public class MainServlet extends HttpServlet {
 			TimelineItem timelineItem = new TimelineItem();
 			//timelineItem.setText("Notis: Första utmaningen!");
 			timelineItem.setHtml((String)databas.pop());
-			databas.pop();
+			//databas.pop();
 			
 
 			for(int i = 0; i < result.size(); i++){
 				try{
 					if(result.get(i).getIsBundleCover()){
 						
-						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: Experiment", "DEFAULT");
+						//um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: Experiment", "DEFAULT");
+						um.updateTimelineItem(service, result.get(i).getId(), (String)databas.pop(), "DEFAULT");
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");
@@ -312,6 +314,7 @@ public class MainServlet extends HttpServlet {
 				try{
 					if(result.get(i).getIsPinned()){
 						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
+						//um.updateTimelineItem(service, result.get(i).getId(), (String)databas.pop(), "DEFAULT");
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");
@@ -326,7 +329,7 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setBundleId("moment");
+			timelineItem.setBundleId("moment2");
 			timelineItem.setText("Bundle"+counter);
 			//timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));

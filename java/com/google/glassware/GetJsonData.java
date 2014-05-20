@@ -46,7 +46,7 @@ public class GetJsonData {
 
 		try 
 		{
-			Object obj = parser.parse(new FileReader("databas/beta.json"));
+			Object obj = parser.parse(new FileReader("databas/temp2.json"));
 			JSONArray array=(JSONArray)obj;
 
 			for(int j=array.size()-1; j>=0; j--){
@@ -65,16 +65,17 @@ public class GetJsonData {
 					JSONObject bundle =(JSONObject)bundleArray.get(i);
 
 					//Push a bundle card to stack
-					bundleStack.push("<article class='author'><img src='"+bundle.get("b1I")
+					bundleStack.push("<article><img src='"+bundle.get("b1I")
 							+ "' width='100%' height='100%'><div class='overlay-full'/><section>"+bundle.get("b1t")
 							+ "</section></article>");
 				}
 
 				databas.push(bundleStack);
-				databas.push("<article class='author'><section>"+array1.get("coverOfBundle")+ "</section></article>");
+				databas.push("<article><section>"+array1.get("coverOfBundle")+ "</section></article>");
+				//databas.push((String)array1.get("coverOfBundle"));
 
 				JSONObject notification=(JSONObject)array1.get("notification");
-				databas.push("<article class='author'><img src='"+notification.get("nI")
+				databas.push("<article><img src='"+notification.get("nI")
 						+ "' width='100%' height='100%'><div class='overlay-full'/><section>"+notification.get("nT")
 						+ "</section></article>");
 
@@ -105,7 +106,7 @@ public class GetJsonData {
 		try 
 		{
 			//Object obj = parser.parse(new FileReader("databas/test.json"));
-			Object obj = parser.parse(new FileReader("databas/temp.json"));
+			Object obj = parser.parse(new FileReader("databas/temp2.json"));
 			JSONArray array=(JSONArray)obj;
 			//Read the first object from json array	
 			JSONObject array1=(JSONObject)array.get(0);
