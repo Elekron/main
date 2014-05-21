@@ -153,7 +153,9 @@ public class MainServlet extends HttpServlet {
 	public static final String CONTACT_ID = "com.google.glassware.contact.java-quick-start";
 	public static final String CONTACT_NAME = "Java Quick Start";
 
-
+/**
+ * 
+ */
 	private static final String PAGINATED_HTML =
 			"<article class='author'>"
 					+ "<img src='http://littleswedenart.files.wordpress.com/2012/11/ok_glass_wp_hallgren.jpg?w=700&h=' width='100%' height='100%'>"
