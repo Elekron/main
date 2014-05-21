@@ -253,7 +253,7 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 
-			CreateBundleCards("Heloo");
+			//CreateBundleCards("Heloo");
 
 			TimelineItem timelineItem = new TimelineItem();
 			//timelineItem.setText("Notis: Första utmaningen!");
