@@ -170,7 +170,7 @@ public class MainServlet extends HttpServlet {
 	 */
 	public void CreateBundleCards(String bundleCard){
 		TimelineItem timelineItem = new TimelineItem();
-		timelineItem.setBundleId("moment2");
+		timelineItem.setBundleId("heat");
 		//timelineItem.setText("Bundle"+counter);
 		timelineItem.setHtml(bundleCard);
 		timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
@@ -216,7 +216,7 @@ public class MainServlet extends HttpServlet {
 			timelineItem.setHtml((String)databas.pop());
 
 			if(firstTimeNotification){
-				timelineItem.setBundleId("moment2");
+				timelineItem.setBundleId("heat");
 				timelineItem.setIsBundleCover(true);
 
 				List<MenuItem> menuItemList = new ArrayList<MenuItem>();
@@ -307,19 +307,21 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 			//System.out.println(result.size() + "  " + result.get(result.size()-1).getIsPinned());
-
-
-
-			for(int i = 0; i < result.size(); i++){
-				try{
-					if(result.get(i).getIsPinned()){
-						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
-						//um.updateTimelineItem(service, result.get(i).getId(), (String)databas.pop(), "DEFAULT");
-					}
-				}catch(NullPointerException e){
-					System.out.println("null");
-				}
+			for(int i=0;i<result.size();i++){
+				System.out.println(result.get(0));
 			}
+
+//
+//			for(int i = 0; i < result.size(); i++){
+//				try{
+//					if(result.get(i).getIsPinned()){
+//						um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: WallTagger", "DEFAULT");
+//						//um.updateTimelineItem(service, result.get(i).getId(), (String)databas.pop(), "DEFAULT");
+//					}
+//				}catch(NullPointerException e){
+//					System.out.println("null");
+//				}
+//			}
 
 			//um.updateTimelineItem(MirrorClient.getMirror(credential), result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
 
@@ -329,7 +331,7 @@ public class MainServlet extends HttpServlet {
 		} else if (req.getParameter("operation").equals("InsertBundleCard")) {
 
 			TimelineItem timelineItem = new TimelineItem();
-			timelineItem.setBundleId("moment2");
+			timelineItem.setBundleId("moment233");
 			timelineItem.setText("Bundle"+counter);
 			//timelineItem.setHtml(PAGINATED_HTML);
 			timelineItem.setNotification(new NotificationConfig().setLevel("DEFAULT"));
