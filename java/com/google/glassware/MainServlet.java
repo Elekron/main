@@ -357,11 +357,12 @@ public class MainServlet extends HttpServlet {
 			timelineItems = request.execute();
 			result = timelineItems.getItems();
 
-
+			System.out.print(result.size() + " cards deleted");
 
 			for (int i=0; i < result.size();i++) {
 				MirrorClient.deleteTimelineItem(credential,result.get(i).getId());
 			}
+			
 
 			firstTimeNotification = true;
 
