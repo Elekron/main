@@ -52,7 +52,7 @@ public class MainServlet extends HttpServlet {
 
 	
 	private Stack databas = new Stack();
-	
+	private ArrayList<String> bundleCover = new ArrayList<String>();
 
 	
 	/**
@@ -113,8 +113,9 @@ public class MainServlet extends HttpServlet {
 					if(result.get(result.size()-1).getIsPinned()){
 						System.out.println("Is pin");
 						//databas.pop();
+						bundleCover.add((String)databas.pop());
 						//um.updateTimelineItem(service, result.get(result.size()-1).getId(), "Rubrik: WallTagger", "DEFAULT");
-						um.updateTimelineItem(service, result.get(result.size()-1).getId(), (String)databas.pop(), "DEFAULT");
+						um.updateTimelineItem(service, result.get(result.size()-1).getId(), "<article><section> <ul class='text-x-small'>"+bundleCover.get(0)+ "</ul></section></article>", "DEFAULT");
 						
 						Stack<String> bundleStack = new Stack<String>();
 						bundleStack = (Stack)databas.pop();
@@ -185,8 +186,10 @@ public class MainServlet extends HttpServlet {
 		}
 		counter++;
 	}
-	String tempCover = "", covercard;
-	int cal = 0 ;
+	
+
+	
+
 	/**
 	 * Do stuff when buttons on index.jsp are clicked
 	 */
@@ -267,17 +270,14 @@ public class MainServlet extends HttpServlet {
 			for(int i = 0; i < result.size(); i++){
 				try{
 					if(result.get(i).getIsBundleCover()){
-						
+						String temp = "";
 						//um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: Experiment", "DEFAULT");
-						if (cal > 5){
-						tempCover = "";
-						cal=0;
+						bundleCover.add((String)databas.pop());
+						for (String item : bundleCover) {
+							temp  += item;
 						}
-						tempCover += (String)databas.pop();
-						cal++;
 						
-						covercard = "<article><section> <ul class='text-x-small'>"+tempCover+ "</ul></section></article>";
-						um.updateTimelineItem(service, result.get(i).getId(), covercard, "DEFAULT");
+						um.updateTimelineItem(service, result.get(i).getId(), "<article><section> <ul class='text-x-small'>"+temp+ "</ul></section></article>", "DEFAULT");
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");
