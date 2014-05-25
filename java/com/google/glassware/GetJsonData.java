@@ -80,19 +80,18 @@ int k;
 
 				
 				databas.push(bundleStack);
-<<<<<<< HEAD
 				//String listCover = "<li>"+array1.get("coverOfBundle")+"</li>";
 				databas.push("<li>"+array1.get("coverOfBundle")+"</li>");
 				//databas.push("<article><section> <ul class='text-x-small'>"+array1.get("coverOfBundle")+ "</ul></section></article>");
 				//databas.push((String)array1.get("coverOfBundle"));
-=======
-				databas.push("<article><section>"+array1.get("coverOfBundle")+ "</section></article>");
+
+				//databas.push("<article><section>"+array1.get("coverOfBundle")+ "</section></article>");
 				
 //				bundleCoverListString += "<li>"+array1.get("coverOfBundle")+ "</li>";
 //				System.out.print("\nbundleCoverList size: " + bundleCoverListLength);
 //				databas.push("<article><section>" + bundleCoverListString + "</section></article>");
 //				bundleCoverListLength++;
->>>>>>> FETCH_HEAD
+
 
 				
 				JSONObject notification=(JSONObject)array1.get("notification");
