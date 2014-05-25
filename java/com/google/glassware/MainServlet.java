@@ -185,7 +185,8 @@ public class MainServlet extends HttpServlet {
 		}
 		counter++;
 	}
-	
+	String tempCover = "", covercard;
+	int cal = 0 ;
 	/**
 	 * Do stuff when buttons on index.jsp are clicked
 	 */
@@ -268,7 +269,15 @@ public class MainServlet extends HttpServlet {
 					if(result.get(i).getIsBundleCover()){
 						
 						//um.updateTimelineItem(service, result.get(i).getId(), "Rubrik: Experiment", "DEFAULT");
-						um.updateTimelineItem(service, result.get(i).getId(), (String)databas.pop(), "DEFAULT");
+						if (cal > 5){
+						tempCover = "";
+						cal=0;
+						}
+						tempCover += (String)databas.pop();
+						cal++;
+						
+						covercard = "<article><section> <ul class='text-x-small'>"+tempCover+ "</ul></section></article>";
+						um.updateTimelineItem(service, result.get(i).getId(), covercard, "DEFAULT");
 					}
 				}catch(NullPointerException e){
 					System.out.println("null");

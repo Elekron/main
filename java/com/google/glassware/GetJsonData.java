@@ -46,7 +46,7 @@ public class GetJsonData {
 
 		try 
 		{
-			Object obj = parser.parse(new FileReader("databas/temp2.json"));
+			Object obj = parser.parse(new FileReader("databas/axel.json"));
 			JSONArray array=(JSONArray)obj;
 
 			for(int j=array.size()-1; j>=0; j--){
@@ -70,8 +70,15 @@ public class GetJsonData {
 							+ "</section></article>");
 				}
 
+
+				      
+
+
+				
 				databas.push(bundleStack);
-				databas.push("<article><section>"+array1.get("coverOfBundle")+ "</section></article>");
+				//String listCover = "<li>"+array1.get("coverOfBundle")+"</li>";
+				databas.push("<li>"+array1.get("coverOfBundle")+"</li>");
+				//databas.push("<article><section> <ul class='text-x-small'>"+array1.get("coverOfBundle")+ "</ul></section></article>");
 				//databas.push((String)array1.get("coverOfBundle"));
 
 				JSONObject notification=(JSONObject)array1.get("notification");
