@@ -23,8 +23,9 @@ limitations under the License.
 <%@ page import="com.google.api.services.mirror.model.Attachment" %>
 <%@ page import="com.google.glassware.MainServlet" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
+<%@ page import="java.io.*"  %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
 <!doctype html>
 <%
@@ -54,22 +55,35 @@ limitations under the License.
     }
   }
 
+/*  String str = "DAMN";
+
+  String file = "";
+  try {   
+      PrintWriter pw = new PrintWriter(new FileOutputStream(file));
+      pw.println(str);
+      //clean up
+      pw.close();
+  } catch(IOException e) {
+     out.println(e.getMessage());
+  }*/
+
 %>
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glassware Starter Project</title>
+  <title>Glass for education</title>
   <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
         media="screen">
   <link href="/static/bootstrap/css/bootstrap-responsive.min.css"
         rel="stylesheet" media="screen">
   <link href="/static/main.css" rel="stylesheet" media="screen">
+  <link href='http://fonts.googleapis.com/css?family=Roboto:100,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-static-top" id="main-header">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">Glassware Starter Project: Java Edition</a>
+      <a class="navbar-brand" href="#">Education for Google Glass</a>
     </div>
   </div>
 </div>
@@ -80,6 +94,158 @@ limitations under the License.
     if (flash != null) { %>
   <div class="alert alert-info"><%= StringEscapeUtils.escapeHtml4(flash) %></div>
   <% } %>
+
+  <div class="row">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <h2>Timeline</h2>
+
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="InsertStartCard">
+        <button class="btn btn-info btn-lg btn-block" type="submit">
+          Insert start card
+        </button>
+      </form>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="InsertNotification">
+        <button class="btn btn-info btn-lg btn-block" type="submit">
+          Insert notification
+        </button>
+      </form>
+     <!-- <hr>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="UpdateCoverCard">
+        <button class="btn btn-info btn-lg btn-block" type="submit">
+          Update CoverCard 
+        </button>
+      </form>
+      <hr>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="InsertBundleCard">
+        <button class="btn btn-info btn-lg btn-block" type="submit">
+          Insert BundleCard
+        </button>
+      </form>
+      <hr>-->
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="DeleteAllCard">
+        <button class="btn btn-info btn-lg btn-block" type="submit">
+          Delete all cards</button>
+      </form>
+      <hr>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12" id="content-form">
+      <form name="frm" method="post" action="service.jsp">    
+
+        <h3>Title</h3>
+        <div class="form-group"><label>Title for bundle cover</label><input class="form-control" type="text" name="coverOfBundle"></div>
+
+      <h3>Notification</h3>
+        <div class="form-group"><label>Text</label><input class="form-control" type="text" name="notificationText"></div>
+        
+        <div class="form-group"><label>Image</label><input class="form-control" type="text" name="notificationImg">
+        <p class="small help-block">http://example.com/imageadress.jpg</p>
+        </div>
+        
+        <h3>Bundled information</h3>
+        <div class="form-group"><label>Text</label><input class="form-control" type="text" name="bundleText"> </div>
+        
+        <div class="form-group"><label>Image</label><input class="form-control" type="text" name="bundleImg">
+        <p class="help-block small">http://example.com/imageadress.jpg</p> 
+        </div>
+
+        
+        <input type="submit" name="submit" value="Submit to database" class="btn btn-lg btn-info right">
+      </form>
+    </div>
+
+    <%--<div class="span4">
+      <h2>Contacts</h2>
+
+      <p>By default, this project inserts a single contact that accepts
+        all content types. Learn more about contacts
+        <a href="https://developers.google.com/glass/contacts">here</a>.</p>
+
+      <% if (contact == null) { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="insertContact">
+        <input type="hidden" name="iconUrl" value="<%= appBaseUrl +
+               "static/images/chipotle-tube-640x360.jpg" %>">
+        <input type="hidden" name="id"
+               value="<%= MainServlet.CONTACT_ID %>">
+        <input type="hidden" name="name"
+               value="<%= MainServlet.CONTACT_NAME %>">
+        <button class="btn btn-block btn-success" type="submit">
+          Insert Java Quick Start Contact
+        </button>
+      </form>
+      <% } else { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="deleteContact">
+        <input type="hidden" name="id" value="<%= MainServlet.CONTACT_ID %>">
+        <button class="btn btn-block btn-danger" type="submit">
+          Delete Java Quick Start Contact
+        </button>
+      </form>
+      <% } %>
+
+      <h3>Voice Commands</h3>
+      <p>The "Java Quick Start" contact also accepts the <strong>take a
+        note</strong> command. Take a note with the "Java Quick Start" contact
+        and the cat in the server will record your note and reply with one of
+        a few cat utterances.</p>
+    </div>
+
+    <div class="span4">
+      <h2>Subscriptions</h2>
+
+      <p>By info a subscription is inserted for changes to the
+        <code>timeline</code> collection. Learn more about subscriptions
+        <a href="https://developers.google.com/glass/subscriptions">here</a>.
+      </p>
+
+      <p class="alert alert-info">Note: Subscriptions require SSL. They will
+        not work on localhost.</p>
+
+      <% if (timelineSubscriptionExists) { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
+            method="post">
+        <input type="hidden" name="subscriptionId" value="timeline">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit" class="delete">
+          Unsubscribe from timeline updates
+        </button>
+      </form>
+      <% } else { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="timeline">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to timeline updates
+        </button>
+      </form>
+      <% } %>
+
+      <% if (locationSubscriptionExists) { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
+            method="post">
+        <input type="hidden" name="subscriptionId" value="locations">
+        <input type="hidden" name="operation" value="deleteSubscription">
+        <button class="btn btn-block btn-danger" type="submit" class="delete">
+          Unsubscribe from location updates
+        </button>
+      </form>
+      <% } else { %>
+      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
+        <input type="hidden" name="operation" value="insertSubscription">
+        <input type="hidden" name="collection" value="locations">
+        <button class="btn btn-block btn-success" type="submit">
+          Subscribe to location updates
+        </button>
+      </form>
+      <% } %>
+    </div>--%>
+  </div>
 
   <h1>Your Recent Timeline</h1>
   <div class="row">
@@ -153,141 +319,20 @@ limitations under the License.
     <div style="clear:both;"></div>
   </div>
 
-  <hr/>
-
-  <div class="row">
-    <div class="span4">
-      <h2>Timeline</h2>
-
-
-
-
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="InsertStartCard">
-        <button class="btn btn-block" type="submit">
-          InsertStartCard
-        </button>
-      </form>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="InsertNotification">
-        <button class="btn btn-block" type="submit">
-          Insert Notification
-        </button>
-      </form>
-      <hr>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="UpdateCoverCard">
-        <button class="btn btn-block" type="submit">
-          Update CoverCard 
-        </button>
-      </form>
-      <hr>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="InsertBundleCard">
-        <button class="btn btn-block" type="submit">
-          Insert BundleCard
-        </button>
-      </form>
-      <hr>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="DeleteAllCard">
-        <button class="btn btn-block" type="submit">
-          Delete AllCard</button>
-      </form>
-      <hr>
-    </div>
-
-    <%--<div class="span4">
-      <h2>Contacts</h2>
-
-      <p>By default, this project inserts a single contact that accepts
-        all content types. Learn more about contacts
-        <a href="https://developers.google.com/glass/contacts">here</a>.</p>
-
-      <% if (contact == null) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertContact">
-        <input type="hidden" name="iconUrl" value="<%= appBaseUrl +
-               "static/images/chipotle-tube-640x360.jpg" %>">
-        <input type="hidden" name="id"
-               value="<%= MainServlet.CONTACT_ID %>">
-        <input type="hidden" name="name"
-               value="<%= MainServlet.CONTACT_NAME %>">
-        <button class="btn btn-block btn-success" type="submit">
-          Insert Java Quick Start Contact
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="deleteContact">
-        <input type="hidden" name="id" value="<%= MainServlet.CONTACT_ID %>">
-        <button class="btn btn-block btn-danger" type="submit">
-          Delete Java Quick Start Contact
-        </button>
-      </form>
-      <% } %>
-
-      <h3>Voice Commands</h3>
-      <p>The "Java Quick Start" contact also accepts the <strong>take a
-        note</strong> command. Take a note with the "Java Quick Start" contact
-        and the cat in the server will record your note and reply with one of
-        a few cat utterances.</p>
-    </div>
-
-    <div class="span4">
-      <h2>Subscriptions</h2>
-
-      <p>By default a subscription is inserted for changes to the
-        <code>timeline</code> collection. Learn more about subscriptions
-        <a href="https://developers.google.com/glass/subscriptions">here</a>.
-      </p>
-
-      <p class="alert alert-info">Note: Subscriptions require SSL. They will
-        not work on localhost.</p>
-
-      <% if (timelineSubscriptionExists) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
-            method="post">
-        <input type="hidden" name="subscriptionId" value="timeline">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit" class="delete">
-          Unsubscribe from timeline updates
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="timeline">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to timeline updates
-        </button>
-      </form>
-      <% } %>
-
-      <% if (locationSubscriptionExists) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
-            method="post">
-        <input type="hidden" name="subscriptionId" value="locations">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit" class="delete">
-          Unsubscribe from location updates
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="locations">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to location updates
-        </button>
-      </form>
-      <% } %>
-    </div>--%>
-  </div>
 </div>
+
+<footer>&copy; EduGlass Project Group</footer>
 
 <script
     src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript">
+  function play() {
+  var frm = $(document.frm);
+  var data = JSON.stringify(frm.serializeArray());
+
+  alert(data);
+}
+</script>-->
 </body>
 </html>
