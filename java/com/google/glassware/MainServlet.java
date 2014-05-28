@@ -176,7 +176,7 @@ public class MainServlet extends HttpServlet {
 	 */
 	public void CreateBundleCards(String bundleCard){
 		TimelineItem timelineItem = new TimelineItem();
-		timelineItem.setBundleId("cold");
+		timelineItem.setBundleId("sun");
 		timelineItem.setHtml(bundleCard);
 		timelineItem.setNotification(new NotificationConfig().setLevel("NULL"));
 
@@ -267,7 +267,7 @@ public class MainServlet extends HttpServlet {
 			timelineItem.setHtml((String)databas.pop());
 
 			if(firstTimeNotification){
-				timelineItem.setBundleId("cold");
+				timelineItem.setBundleId("sun");
 				timelineItem.setIsBundleCover(true);
 
 				List<MenuItem> menuItemList = new ArrayList<MenuItem>();

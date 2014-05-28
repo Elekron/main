@@ -26,7 +26,7 @@ public class GetJsonData {
 	public void writeToStack(){
 		try 
 		{
-			Object obj = parser.parse(new FileReader("databas/axel.json"));
+			Object obj = parser.parse(new FileReader("databas/kenot.json"));
 			JSONArray array=(JSONArray)obj;
 
 			for(int j=array.size()-1; j>=0; j--){

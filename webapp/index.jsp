@@ -97,7 +97,13 @@ limitations under the License.
 
   <div class="row">
     <div class="col-md-4 col-sm-6 col-xs-12">
-      <h2>Timeline</h2>
+
+        <div class="hidden-xs teacher-info">
+          <h2>Teacher tool</h2>
+          <p>This is the control panel for Education for Glass. Here you can add homework, tasks or challenges that will be pushed to the students Glass. Just use the form to fill in the task information, and use the buttons below to push them to the timeline.</p>
+        </div>
+
+      <h2>Manage the timeline</h2>
 
       <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
         <input type="hidden" name="operation" value="InsertStartCard">
@@ -148,103 +154,19 @@ limitations under the License.
         </div>
         
         <h3>Bundled information</h3>
-        <div class="form-group"><label>Text</label><input class="form-control" type="text" name="bundleText"> </div>
-        
-        <div class="form-group"><label>Image</label><input class="form-control" type="text" name="bundleImg">
-        <p class="help-block small">http://example.com/imageadress.jpg</p> 
+        <div id="bundle-info">
+          <p>Card 1</p>
+          <div class="form-group"><label>Text</label><input class="form-control" type="text" name="bundleText1"> </div>
+          
+          <div class="form-group"><label>Image</label><input class="form-control" type="text" name="bundleImg1">
+          <p class="help-block small">http://example.com/imageadress.jpg</p> 
+          </div>
         </div>
-
+        <button onclick="addBundle();" type="button" id="btn-bundle" class="btn btn-info">Add bundle</button><br />
         
-        <input type="submit" name="submit" value="Submit to database" class="btn btn-lg btn-info right">
+        <input type="submit" name="submit" value="Submit to database" class="btn btn-lg btn-info" />
       </form>
     </div>
-
-    <%--<div class="span4">
-      <h2>Contacts</h2>
-
-      <p>By default, this project inserts a single contact that accepts
-        all content types. Learn more about contacts
-        <a href="https://developers.google.com/glass/contacts">here</a>.</p>
-
-      <% if (contact == null) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertContact">
-        <input type="hidden" name="iconUrl" value="<%= appBaseUrl +
-               "static/images/chipotle-tube-640x360.jpg" %>">
-        <input type="hidden" name="id"
-               value="<%= MainServlet.CONTACT_ID %>">
-        <input type="hidden" name="name"
-               value="<%= MainServlet.CONTACT_NAME %>">
-        <button class="btn btn-block btn-success" type="submit">
-          Insert Java Quick Start Contact
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="deleteContact">
-        <input type="hidden" name="id" value="<%= MainServlet.CONTACT_ID %>">
-        <button class="btn btn-block btn-danger" type="submit">
-          Delete Java Quick Start Contact
-        </button>
-      </form>
-      <% } %>
-
-      <h3>Voice Commands</h3>
-      <p>The "Java Quick Start" contact also accepts the <strong>take a
-        note</strong> command. Take a note with the "Java Quick Start" contact
-        and the cat in the server will record your note and reply with one of
-        a few cat utterances.</p>
-    </div>
-
-    <div class="span4">
-      <h2>Subscriptions</h2>
-
-      <p>By info a subscription is inserted for changes to the
-        <code>timeline</code> collection. Learn more about subscriptions
-        <a href="https://developers.google.com/glass/subscriptions">here</a>.
-      </p>
-
-      <p class="alert alert-info">Note: Subscriptions require SSL. They will
-        not work on localhost.</p>
-
-      <% if (timelineSubscriptionExists) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
-            method="post">
-        <input type="hidden" name="subscriptionId" value="timeline">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit" class="delete">
-          Unsubscribe from timeline updates
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="timeline">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to timeline updates
-        </button>
-      </form>
-      <% } %>
-
-      <% if (locationSubscriptionExists) { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>"
-            method="post">
-        <input type="hidden" name="subscriptionId" value="locations">
-        <input type="hidden" name="operation" value="deleteSubscription">
-        <button class="btn btn-block btn-danger" type="submit" class="delete">
-          Unsubscribe from location updates
-        </button>
-      </form>
-      <% } else { %>
-      <form action="<%= WebUtil.buildUrl(request, "/main") %>" method="post">
-        <input type="hidden" name="operation" value="insertSubscription">
-        <input type="hidden" name="collection" value="locations">
-        <button class="btn btn-block btn-success" type="submit">
-          Subscribe to location updates
-        </button>
-      </form>
-      <% } %>
-    </div>--%>
   </div>
 
   <h1>Your Recent Timeline</h1>
@@ -311,7 +233,7 @@ limitations under the License.
       <div class="span12">
         <div class="alert alert-info">
           You haven't added any items to your timeline yet. Use the controls
-          below to add something!
+          above to add something!
         </div>
       </div>
       <% } %>
@@ -326,13 +248,20 @@ limitations under the License.
 <script
     src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-<!--<script type="text/javascript">
-  function play() {
-  var frm = $(document.frm);
-  var data = JSON.stringify(frm.serializeArray());
+<script type="text/javascript">
 
-  alert(data);
-}
-</script>-->
+  var i = 1;
+
+  function addBundle() {
+
+    i++;
+
+    var temp = "<p>Card " + i + "</p><div class=\"form-group\"><label>Text</label><input class=\"form-control\" type=\"text\" name=\"bundleText" + i + "\"></div><div class=\"form-group\"><label>Image</label><input class=\"form-control\" type=\"text\" name=\"bundleImg" + i + "\"><p class=\"help-block small\">http://example.com/imageadress.jpg</p></div>";
+
+    $('#bundle-info').append(temp);
+
+  }
+
+</script>
 </body>
 </html>

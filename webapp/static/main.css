@@ -28,13 +28,24 @@ img.button-icon {
 /*	background: #72d4db;*/
 }
 
+#btn-bundle {
+	clear: both;
+	margin-bottom: 15px;
+}
+
 form {
 	margin: 10px;
 }
 
 #content-form {
-	background: #f5f5f5;
+	background: #fafafa;
 	padding: 10px;
+}
+
+.teacher-info {
+	background: #fafafa;
+	padding: 10px 25px 25px 25px;
+	font-size: 18px;
 }
 
 footer {
