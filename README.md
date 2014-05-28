@@ -33,7 +33,7 @@ GlassLearningByDoing is a Google Glass mirror application for teacher.
 *
 
 
-```python
+```java
     from pyechonest import config
     config.ECHO_NEST_API_KEY="YOUR API KEY"
 ```
