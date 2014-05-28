@@ -11,10 +11,10 @@ GlassLearningByDoing is a Google Glass mirror application for teacher.
 * 
 
 
-<img src="http://github.com/Elekron/main/blob/master/imges/exempleNotificationCard.png" width="300" />
-<img src="http://github.com/Elekron/main/blob/master/imges/exempleListCard.png" width="300" />
-<img src="http://github.com/Elekron/main/blob/master/imges/exempleTaskCard.png" width="300" />
-<img src="http://github.com/Elekron/main/blob/master/imges/exempleInfoCard.png" width="300" />
+<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleNotificationCard.png" width="300" />
+<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleListCard.png" width="300" />
+<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleTaskCard.png" width="300" />
+<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleInfoCard.png" width="300" />
 
 
 
