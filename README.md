@@ -3,21 +3,21 @@ main
 
 GlassLearningByDoing is a Google Glass mirror application for teacher.  
 
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleOfAllCard.png" width="300" />&nbsp;
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleOfAllCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/exempleOfAllCard.png" width="300" />&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/webbinterface.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 ## Features
 
 
 
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleNotificationCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/exempleNotificationCard.png" width="300" />&nbsp;
 
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleListCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/exempleListCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
 
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleTaskCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/exempleTaskCard.png" width="300" />&nbsp;
 
-<img src="https://raw.githubusercontent.com/Elekron/main/master/imges/exempleInfoCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/Elekron/main/master/images/exempleInfoCard.png" width="300" />&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 
