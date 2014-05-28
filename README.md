@@ -30,17 +30,18 @@ GlassLearningByDoing is a Google Glass mirror application for teacher.
 * Go to the Google APIs console and create a new API project.
 * Configure the Quick Start project to use your API client information by entering your client ID and secret into src/main/resources/oauth.properties.
 * You can run the Quick Start project on a local development server for testing:
-*
 
 
 ```java
-    from pyechonest import config
-    config.ECHO_NEST_API_KEY="YOUR API KEY"
+    $ mvn jetty:run
 ```
 
 
 ## Future Plan
-* 
+* Adding data completely through the web interface
+* Location based services 
+* Preview in the web interface 
+* Stabilize
 
 ## License
 
